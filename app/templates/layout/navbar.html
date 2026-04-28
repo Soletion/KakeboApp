@@ -1,0 +1,150 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="background-color: #2c3e50 !important;">
+    <div class="container">
+        <!-- Logo y marca - redirige según rol -->
+        <a class="navbar-brand" href="
+            {%- if current_user.is_authenticated and current_user.es_administrador -%}
+                {{ url_for('admin.dashboard_admin') }}
+            {%- else -%}
+                {{ url_for('dashboard.index') }}
+            {%- endif -%}
+        ">
+            <i class="fas fa-coins me-2"></i>
+            {{ t('nav.titulo') }}
+        </a>
+        
+        <!-- Botón hamburguesa para móvil -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Menú colapsable -->
+        <div class="collapse navbar-collapse" id="navbarMain">
+            {% if current_user.is_authenticated %}
+                
+                {% if current_user.es_administrador %}
+                    <!-- ========================================== -->
+                    <!-- MENÚ PARA ADMINISTRADORES (solo admin) -->
+                    <!-- ========================================== -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint == 'admin.dashboard_admin' }}" 
+                               href="{{ url_for('admin.dashboard_admin') }}">
+                                <i class="fas fa-chart-pie me-1"></i>
+                                {{ t('nav.admin_dashboard') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint == 'admin.listar_usuarios' }}" 
+                               href="{{ url_for('admin.listar_usuarios') }}">
+                                <i class="fas fa-users me-1"></i>
+                                {{ t('nav.admin_usuarios') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint == 'admin.estadisticas_globales' }}" 
+                               href="{{ url_for('admin.estadisticas_globales') }}">
+                                <i class="fas fa-chart-line me-1"></i>
+                                {{ t('nav.admin_estadisticas') }}
+                            </a>
+                        </li>
+                    </ul>
+                    
+                {% else %}
+                    <!-- ========================================== -->
+                    <!-- MENÚ PARA USUARIOS NORMALES (Kakebo) -->
+                    <!-- ========================================== -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('dashboard.') else '' }}" 
+                            href="{{ url_for('dashboard.index') }}">
+                                <i class="fas fa-tachometer-alt me-1"></i> {{ t('nav.dashboard') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('gastos') }}" 
+                               href="{{ url_for('gastos.listado') }}">
+                                <i class="fas fa-arrow-down me-1 text-danger"></i>
+                                {{ t('nav.gastos') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('ingresos') }}" 
+                               href="{{ url_for('ingresos.listado') }}">
+                                <i class="fas fa-arrow-up me-1 text-success"></i>
+                                {{ t('nav.ingresos') }}
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link {{ 'active' if request.endpoint and request.endpoint.startswith('objetivos') }}" 
+                               href="{{ url_for('objetivos.listado') }}">
+                                <i class="fas fa-bullseye me-1"></i>
+                                {{ t('nav.objetivos') }}
+                            </a>
+                        </li>
+                    </ul>
+                {% endif %}
+                
+                <!-- Menú de usuario común (idioma y perfil) - visible para ambos roles -->
+                <ul class="navbar-nav">
+                    <!-- Selector de idioma -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-language me-1"></i>
+                            {{ t('nav.idioma.' + session.get('idioma', 'es')) }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item {{ 'active' if session.get('idioma') == 'es' }}" 
+                                   href="{{ url_for('idioma.cambiar', idioma='es') }}">
+                                    <i class="fas fa-flag me-2"></i>Español
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item {{ 'active' if session.get('idioma') == 'en' }}" 
+                                   href="{{ url_for('idioma.cambiar', idioma='en') }}">
+                                    <i class="fas fa-flag-usa me-2"></i>English
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    
+                    <!-- Perfil -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>
+                            {{ current_user.username }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" href="{{ url_for('auth.perfil') }}">
+                                    <i class="fas fa-id-card me-2"></i>{{ t('nav.perfil') }}
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger" href="{{ url_for('auth.logout') }}">
+                                    <i class="fas fa-sign-out-alt me-2"></i>{{ t('nav.salir') }}
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+                
+            {% else %}
+                <!-- Menú para usuarios no autenticados -->
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('auth.login') }}">
+                            <i class="fas fa-sign-in-alt me-1"></i>{{ t('nav.entrar') }}
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-outline-light" href="{{ url_for('auth.registro') }}">
+                            <i class="fas fa-user-plus me-1"></i>{{ t('nav.registro') }}
+                        </a>
+                    </li>
+                </ul>
+            {% endif %}
+        </div>
+    </div>
+</nav>
