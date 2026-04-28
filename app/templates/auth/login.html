@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('auth.login.titulo') }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <i class="fas fa-coins fa-3x mb-3"></i>
+                <h3 class="mb-0">{{ t('auth.login.titulo') }}</h3>
+            </div>
+            
+            <div class="card-body p-5">
+                <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <div class="mb-4">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>{{ t('auth.login.email') }}
+                        </label>
+                        <input type="email" 
+                               class="form-control form-control-lg" 
+                               id="email" 
+                               name="email" 
+                               required 
+                               placeholder="{{ t('auth.login.email_placeholder') }}">
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="password" class="form-label">
+                            <i class="fas fa-lock me-2"></i>{{ t('auth.login.password') }}
+                        </label>
+                        <input type="password" 
+                               class="form-control form-control-lg" 
+                               id="password" 
+                               name="password" 
+                               required 
+                               placeholder="{{ t('auth.login.password_placeholder') }}">
+                    </div>
+                    
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="recordar" name="recordar">
+                        <label class="form-check-label" for="recordar">
+                            {{ t('auth.login.recordar') }}
+                        </label>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-sign-in-alt me-2"></i>{{ t('auth.login.boton') }}
+                        </button>
+                    </div>
+                </form>
+                
+                <hr class="my-4">
+                
+                <div class="text-center">
+                    <p class="mb-2">{{ t('auth.login.no_tienes_cuenta') }}</p>
+                    <a href="{{ url_for('auth.registro') }}" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus me-2"></i>{{ t('auth.login.registrarse') }}
+                    </a>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <a href="{{ url_for('auth.recuperar_password') }}" class="text-muted small">
+                        <i class="fas fa-key me-1"></i>{{ t('auth.login.olvide_password') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

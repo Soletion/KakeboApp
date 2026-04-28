@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('auth.registro.titulo') }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white text-center py-4">
+                <i class="fas fa-user-plus fa-3x mb-3"></i>
+                <h3 class="mb-0">{{ t('auth.registro.titulo') }}</h3>
+            </div>
+            
+            <div class="card-body p-5">
+                <form method="POST" action="{{ url_for('auth.registro') }}" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nombre" class="form-label">
+                                <i class="fas fa-user me-2"></i>{{ t('auth.registro.nombre') }}
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="nombre" 
+                                   name="nombre" 
+                                   required 
+                                   value="{{ request.form.nombre or '' }}">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="apellidos" class="form-label">
+                                {{ t('auth.registro.apellidos') }}
+                            </label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="apellidos" 
+                                   name="apellidos"
+                                   value="{{ request.form.apellidos or '' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">
+                            <i class="fas fa-envelope me-2"></i>{{ t('auth.registro.email') }}
+                        </label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email" 
+                               name="email" 
+                               required 
+                               value="{{ request.form.email or '' }}">
+                        <div class="form-text">{{ t('auth.registro.email_ayuda') }}</div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="username" class="form-label">
+                            <i class="fas fa-at me-2"></i>{{ t('auth.registro.usuario') }}
+                        </label>
+                        <input type="text" 
+                               class="form-control" 
+                               id="username" 
+                               name="username" 
+                               required 
+                               value="{{ request.form.username or '' }}">
+                        <div class="form-text">{{ t('auth.registro.usuario_ayuda') }}</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label">
+                                <i class="fas fa-lock me-2"></i>{{ t('auth.registro.password') }}
+                            </label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password" 
+                                   name="password" 
+                                   required>
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="confirm_password" class="form-label">
+                                <i class="fas fa-lock me-2"></i>{{ t('auth.registro.confirmar_password') }}
+                            </label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="confirm_password" 
+                                   name="confirm_password" 
+                                   required>
+                        </div>
+                    </div>
+                    
+                    <div class="alert alert-info small">
+                        <i class="fas fa-info-circle me-2"></i>
+                        {{ t('auth.registro.password_requisitos') }}
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-user-plus me-2"></i>{{ t('auth.registro.boton') }}
+                        </button>
+                        
+                        <a href="{{ url_for('auth.login') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>{{ t('auth.registro.volver_login') }}
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('password').addEventListener('input', function(e) {
+    // Validación básica de contraseña en cliente
+    const password = e.target.value;
+    const requirements = document.querySelector('.alert-info');
+    
+    if (password.length < 8) {
+        requirements.classList.add('alert-danger');
+        requirements.classList.remove('alert-info');
+    } else {
+        requirements.classList.remove('alert-danger');
+        requirements.classList.add('alert-success');
+    }
+});
+
+// Validar que las contraseñas coinciden
+document.querySelector('form').addEventListener('submit', function(e) {
+    const password = document.getElementById('password').value;
+    const confirm = document.getElementById('confirm_password').value;
+    
+    if (password !== confirm) {
+        e.preventDefault();
+        alert('{{ t('auth.registro.error.password_mismatch') }}');
+    }
+});
+</script>
+{% endblock %}
