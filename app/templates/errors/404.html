@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('errores.404.titulo') }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center min-vh-75 align-items-center">
+    <div class="col-md-8 col-lg-6 text-center">
+        <div class="error-container py-5">
+            <!-- Icono de error -->
+            <div class="display-1 text-primary mb-4">
+                <i class="fas fa-search"></i>
+            </div>
+            
+            <!-- Código de error -->
+            <h1 class="display-1 fw-bold text-primary">404</h1>
+            
+            <!-- Título del error -->
+            <h2 class="h2 mb-4">{{ t('errores.404.titulo') }}</h2>
+            
+            <!-- Mensaje de error -->
+            <p class="lead text-muted mb-5">
+                {{ t('errores.404.mensaje') }}
+            </p>
+            
+            <!-- Acciones sugeridas -->
+            <div class="suggestions mb-5">
+                <h5 class="h6 text-uppercase text-muted mb-3">¿Qué puedes hacer?</h5>
+                <div class="row g-3">
+                    <div class="col-sm-4">
+                        <a href="{{ url_for('dashboard.index') }}" class="text-decoration-none">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-home fa-2x text-primary mb-2"></i>
+                                    <p class="small mb-0">Ir al inicio</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="javascript:history.back()" class="text-decoration-none">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-arrow-left fa-2x text-primary mb-2"></i>
+                                    <p class="small mb-0">Volver atrás</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-sm-4">
+                        <a href="{{ url_for('auth.perfil') }}" class="text-decoration-none">
+                            <div class="card bg-light border-0">
+                                <div class="card-body">
+                                    <i class="fas fa-user fa-2x text-primary mb-2"></i>
+                                    <p class="small mb-0">Mi perfil</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Botón principal -->
+            <a href="{{ url_for('dashboard.index') }}" class="btn btn-primary btn-lg">
+                <i class="fas fa-home me-2"></i>
+                {{ t('errores.404.volver') }}
+            </a>
+        </div>
+    </div>
+</div>
+
+<style>
+.min-vh-75 {
+    min-height: 75vh;
+}
+.error-container {
+    animation: fadeInUp 0.5s ease;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+.suggestions .card {
+    transition: transform 0.3s ease;
+}
+.suggestions .card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}

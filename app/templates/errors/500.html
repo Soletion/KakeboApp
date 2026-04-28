@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('errores.500.titulo') }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center min-vh-75 align-items-center">
+    <div class="col-md-8 col-lg-6 text-center">
+        <div class="error-container py-5">
+            <!-- Icono de error -->
+            <div class="display-1 text-danger mb-4">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            
+            <!-- Código de error -->
+            <h1 class="display-1 fw-bold text-danger">500</h1>
+            
+            <!-- Título del error -->
+            <h2 class="h2 mb-4">{{ t('errores.500.titulo') }}</h2>
+            
+            <!-- Mensaje de error -->
+            <p class="lead text-muted mb-4">
+                {{ t('errores.500.mensaje') }}
+            </p>
+            
+            <!-- Información adicional -->
+            <div class="alert alert-warning mb-5">
+                <i class="fas fa-info-circle me-2"></i>
+                {{ t('errores.500.intentar') }}
+            </div>
+            
+            <!-- Acciones sugeridas -->
+            <div class="suggestions mb-5">
+                <h5 class="h6 text-uppercase text-muted mb-3">Opciones disponibles</h5>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-primary w-100">
+                            <i class="fas fa-home me-2"></i>
+                            Ir al inicio
+                        </a>
+                    </div>
+                    <div class="col-sm-6">
+                        <a href="javascript:location.reload()" class="btn btn-outline-secondary w-100">
+                            <i class="fas fa-sync-alt me-2"></i>
+                            Reintentar
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Información de contacto -->
+            <div class="contact-info bg-light p-4 rounded">
+                <h6 class="mb-3">
+                    <i class="fas fa-headset me-2 text-primary"></i>
+                    ¿El problema persiste?
+                </h6>
+                <p class="small text-muted mb-2">
+                    Puedes contactar con nosotros para reportar este error:
+                </p>
+                <div class="d-flex justify-content-center gap-3">
+                    <a href="mailto:soporte@kakebo.com" class="text-decoration-none">
+                        <i class="fas fa-envelope me-1"></i>
+                        soporte@kakebo.com
+                    </a>
+                    <span class="text-muted">|</span>
+                    <a href="#" class="text-decoration-none">
+                        <i class="fas fa-comment me-1"></i>
+                        Chat de ayuda
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.min-vh-75 {
+    min-height: 75vh;
+}
+.error-container {
+    animation: fadeIn 0.5s ease;
+}
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+.contact-info {
+    border-left: 4px solid #2c3e50;
+}
+</style>
+{% endblock %}
