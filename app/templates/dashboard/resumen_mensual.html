@@ -1,0 +1,215 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('dashboard.resumen_mensual') }} - {{ nombre_mes }} {{ año_seleccionado }}{% endblock %}
+
+{% block header %}
+<div class="row mb-4">
+    <div class="col">
+        <h2>
+            <i class="fas fa-calendar-alt me-2"></i>
+            {{ t('dashboard.resumen_mensual') }}: {{ nombre_mes }} {{ año_seleccionado }}
+        </h2>
+    </div>
+    <div class="col-auto">
+        <!-- Selector de mes -->
+        <form method="GET" class="row g-3">
+            <div class="col-auto">
+                <select name="mes" class="form-select">
+                    {% for i in range(1, 13) %}
+                        <option value="{{ i }}" {{ 'selected' if i == mes_seleccionado }}>
+                            {{ datetime(2000, i, 1).strftime('%B') }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <select name="año" class="form-select">
+                    {% for año in range(2020, now.year + 1) %}
+                        <option value="{{ año }}" {{ 'selected' if año == año_seleccionado }}>
+                            {{ año }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search me-2"></i>{{ t('dashboard.ver') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Tarjetas de resumen -->
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('dashboard.ingresos') }}</h6>
+                <h3>€{{ "%.2f"|format(resumen.total_ingresos) }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-danger text-white h-100">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('dashboard.gastos') }}</h6>
+                <h3>€{{ "%.2f"|format(resumen.total_gastos) }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('dashboard.ahorro') }}</h6>
+                <h3>€{{ "%.2f"|format(resumen.ahorro) }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-3 mb-3">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('dashboard.media_diaria') }}</h6>
+                <h3>€{{ "%.2f"|format(resumen.media_diaria) }}</h3>
+                <small>{{ resumen.dias_transcurridos }}/{{ resumen.dias_totales }} {{ t('dashboard.dias') }}</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Detalle de gastos por categoría -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">{{ t('dashboard.gastos_por_categoria') }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>{{ t('dashboard.categoria') }}</th>
+                                <th class="text-end">{{ t('dashboard.cantidad') }}</th>
+                                <th class="text-end">{{ t('dashboard.total') }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for categoria in categorias %}
+                                {% set cat_data = gastos_por_categoria.get(categoria.id, {}) %}
+                                <tr>
+                                    <td>
+                                        <span class="badge" style="background-color: {{ categoria.color }}">
+                                            <i class="fas {{ categoria.icono }}"></i>
+                                        </span>
+                                        <span class="ms-2">{{ categoria.nombre_mostrar }}</span>
+                                    </td>
+                                    <td class="text-end">{{ cat_data.get('cantidad', 0) }}</td>
+                                    <td class="text-end fw-bold">
+                                        €{{ "%.2f"|format(cat_data.get('total', 0)) }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                        <tfoot>
+                            <tr class="table-primary">
+                                <th colspan="2">{{ t('dashboard.total') }}</th>
+                                <th class="text-end">€{{ "%.2f"|format(resumen.total_gastos) }}</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Listado de gastos -->
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ t('dashboard.detalle_gastos') }}</h5>
+                <a href="{{ url_for('gastos.nuevo') }}" class="btn btn-sm btn-primary">
+                    <i class="fas fa-plus me-2"></i>{{ t('dashboard.nuevo_gasto') }}
+                </a>
+            </div>
+            <div class="card-body" style="max-height: 400px; overflow-y: auto;">
+                {% if gastos %}
+                    {% from 'componentes/tarjetas.html' import tarjeta_gasto %}
+                    {% for gasto in gastos %}
+                        {{ tarjeta_gasto(gasto) }}
+                    {% endfor %}
+                {% else %}
+                    <p class="text-muted text-center py-4">
+                        <i class="fas fa-receipt fa-3x mb-3"></i><br>
+                        {{ t('dashboard.sin_gastos_mes') }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ingresos del mes -->
+<div class="row">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">{{ t('dashboard.ingresos_mes') }}</h5>
+                <a href="{{ url_for('ingresos.nuevo') }}" class="btn btn-sm btn-success">
+                    <i class="fas fa-plus me-2"></i>{{ t('dashboard.nuevo_ingreso') }}
+                </a>
+            </div>
+            <div class="card-body">
+                {% if ingresos %}
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>{{ t('dashboard.fecha') }}</th>
+                                    <th>{{ t('dashboard.descripcion') }}</th>
+                                    <th>{{ t('dashboard.tipo') }}</th>
+                                    <th class="text-end">{{ t('dashboard.cantidad') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for ingreso in ingresos %}
+                                    <tr>
+                                        <td>{{ ingreso.fecha }}</td>
+                                        <td>{{ ingreso.descripcion or '-' }}</td>
+                                        <td>
+                                            {% if ingreso.es_fijo %}
+                                                <span class="badge bg-info">{{ t('dashboard.fijo') }}</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ t('dashboard.variable') }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="text-end text-success fw-bold">
+                                            +€{{ "%.2f"|format(ingreso.cantidad) }}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tfoot>
+                                <tr class="table-success">
+                                    <th colspan="3">{{ t('dashboard.total_ingresos') }}</th>
+                                    <th class="text-end">€{{ "%.2f"|format(resumen.total_ingresos) }}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="text-muted text-center py-4">
+                        <i class="fas fa-coins fa-3x mb-3"></i><br>
+                        {{ t('dashboard.sin_ingresos_mes') }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
