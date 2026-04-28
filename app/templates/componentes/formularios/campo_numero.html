@@ -1,0 +1,42 @@
+{% macro campo_numero(nombre, label, valor='', required=false, min='0', step='0.01', placeholder='', ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">
+        {{ label }}
+        {% if required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    <div class="input-group">
+        <span class="input-group-text">€</span>
+        <input type="number" 
+               class="form-control" 
+               id="{{ nombre }}" 
+               name="{{ nombre }}" 
+               value="{{ valor }}"
+               {% if required %}required{% endif %}
+               min="{{ min }}"
+               step="{{ step }}"
+               placeholder="{{ placeholder }}">
+    </div>
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro campo_porcentaje(nombre, label, valor='', required=false, min='0', max='100', ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">{{ label }}</label>
+    <div class="input-group">
+        <input type="number" 
+               class="form-control" 
+               id="{{ nombre }}" 
+               name="{{ nombre }}" 
+               value="{{ valor }}"
+               min="{{ min }}"
+               max="{{ max }}">
+        <span class="input-group-text">%</span>
+    </div>
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}

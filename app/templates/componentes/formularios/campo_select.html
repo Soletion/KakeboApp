@@ -1,0 +1,32 @@
+{% macro campo_select(nombre, label, opciones, valor='', required=false, ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">
+        {{ label }}
+        {% if required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    <select class="form-select" id="{{ nombre }}" name="{{ nombre }}" {% if required %}required{% endif %}>
+        <option value="">{{ t('formularios.seleccionar') }}</option>
+        {% for opcion in opciones %}
+            <option value="{{ opcion.id }}" {% if opcion.id == valor %}selected{% endif %}>
+                {{ opcion.nombre }}
+            </option>
+        {% endfor %}
+    </select>
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro campo_select_simple(nombre, label, opciones, valor='', required=false) %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">{{ label }}</label>
+    <select class="form-select" id="{{ nombre }}" name="{{ nombre }}" {% if required %}required{% endif %}>
+        {% for value, texto in opciones %}
+            <option value="{{ value }}" {% if value == valor %}selected{% endif %}>
+                {{ texto }}
+            </option>
+        {% endfor %}
+    </select>
+</div>
+{% endmacro %}

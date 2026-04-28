@@ -1,0 +1,55 @@
+{% macro campo_texto(nombre, label, valor='', required=false, placeholder='', ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">
+        {{ label }}
+        {% if required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    <input type="text" 
+           class="form-control" 
+           id="{{ nombre }}" 
+           name="{{ nombre }}" 
+           value="{{ valor }}"
+           {% if required %}required{% endif %}
+           placeholder="{{ placeholder }}">
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro campo_email(nombre, label, valor='', required=false, placeholder='', ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">
+        {{ label }}
+        {% if required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    <input type="email" 
+           class="form-control" 
+           id="{{ nombre }}" 
+           name="{{ nombre }}" 
+           value="{{ valor }}"
+           {% if required %}required{% endif %}
+           placeholder="{{ placeholder }}">
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro campo_password(nombre, label, required=false, placeholder='', ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">
+        {{ label }}
+        {% if required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    <input type="password" 
+           class="form-control" 
+           id="{{ nombre }}" 
+           name="{{ nombre }}"
+           {% if required %}required{% endif %}
+           placeholder="{{ placeholder }}">
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}

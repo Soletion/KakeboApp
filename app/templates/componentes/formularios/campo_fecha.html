@@ -1,0 +1,29 @@
+{% macro campo_fecha(nombre, label, valor='', required=false, ayuda='') %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">
+        {{ label }}
+        {% if required %}<span class="text-danger">*</span>{% endif %}
+    </label>
+    <input type="date" 
+           class="form-control" 
+           id="{{ nombre }}" 
+           name="{{ nombre }}" 
+           value="{{ valor }}"
+           {% if required %}required{% endif %}>
+    {% if ayuda %}
+    <div class="form-text">{{ ayuda }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{% macro campo_mes(nombre, label, valor='', required=false) %}
+<div class="mb-3">
+    <label for="{{ nombre }}" class="form-label">{{ label }}</label>
+    <input type="month" 
+           class="form-control" 
+           id="{{ nombre }}" 
+           name="{{ nombre }}" 
+           value="{{ valor }}"
+           {% if required %}required{% endif %}>
+</div>
+{% endmacro %}
