@@ -1,0 +1,206 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('auth.perfil.titulo') }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Sidebar del perfil -->
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex justify-content-center align-items-center" 
+                         style="width: 100px; height: 100px;">
+                        <i class="fas fa-user fa-3x"></i>
+                    </div>
+                </div>
+                
+                <h4>{{ usuario.nombre }} {{ usuario.apellidos }}</h4>
+                <p class="text-muted">@{{ usuario.username }}</p>
+                
+                <hr>
+                
+                <div class="text-start">
+                    <p><i class="fas fa-envelope me-2 text-primary"></i> {{ usuario.email }}</p>
+                    <p><i class="fas fa-calendar me-2 text-primary"></i> 
+                        {{ t('auth.perfil.miembro_desde') }}: {{ usuario.fecha_registro.strftime('%d/%m/%Y') }}
+                    </p>
+                    <p><i class="fas fa-language me-2 text-primary"></i>
+                        {{ t('auth.perfil.idioma') }}: 
+                        <span class="badge bg-primary">{{ 'Español' if usuario.idioma_preferido == 'es' else 'English' }}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Selector de idioma -->
+        <div class="card shadow-sm mt-3">
+            <div class="card-body">
+                <h6 class="card-title">{{ t('auth.perfil.cambiar_idioma') }}</h6>
+                <form action="{{ url_for('auth.cambiar_idioma') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="d-flex gap-2">
+                        <button type="submit" name="idioma" value="es" 
+                                class="btn btn-outline-primary flex-fill {{ 'active' if usuario.idioma_preferido == 'es' }}">
+                            <i class="fas fa-flag me-1"></i>Español
+                        </button>
+                        <button type="submit" name="idioma" value="en" 
+                                class="btn btn-outline-primary flex-fill {{ 'active' if usuario.idioma_preferido == 'en' }}">
+                            <i class="fas fa-flag-usa me-1"></i>English
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Estadísticas rápidas -->
+        <div class="card shadow-sm mt-3">
+            <div class="card-body">
+                <h6 class="card-title">{{ t('auth.perfil.estadisticas') }}</h6>
+                <div class="row text-center">
+                    <div class="col-4">
+                        <h5>{{ usuario.gastos.count() }}</h5>
+                        <small class="text-muted">{{ t('auth.perfil.gastos') }}</small>
+                    </div>
+                    <div class="col-4">
+                        <h5>{{ usuario.ingresos.count() }}</h5>
+                        <small class="text-muted">{{ t('auth.perfil.ingresos') }}</small>
+                    </div>
+                    <div class="col-4">
+                        <h5>{{ usuario.objetivos.count() }}</h5>
+                        <small class="text-muted">{{ t('auth.perfil.objetivos') }}</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Formulario de edición -->
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-edit me-2"></i>{{ t('auth.perfil.editar_perfil') }}</h5>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('auth.perfil') }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <h6 class="text-primary mb-3">{{ t('auth.perfil.datos_personales') }}</h6>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="nombre" class="form-label">{{ t('auth.perfil.nombre') }}</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="nombre" 
+                                   name="nombre" 
+                                   value="{{ usuario.nombre }}"
+                                   required>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <label for="apellidos" class="form-label">{{ t('auth.perfil.apellidos') }}</label>
+                            <input type="text" 
+                                   class="form-control" 
+                                   id="apellidos" 
+                                   name="apellidos" 
+                                   value="{{ usuario.apellidos or '' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">{{ t('auth.perfil.email') }}</label>
+                        <input type="email" 
+                               class="form-control" 
+                               id="email" 
+                               name="email" 
+                               value="{{ usuario.email }}"
+                               required>
+                    </div>
+                    
+                    <hr class="my-4">
+                    
+                    <h6 class="text-primary mb-3">{{ t('auth.perfil.cambiar_password') }}</h6>
+                    
+                    <div class="mb-3">
+                        <label for="password_actual" class="form-label">{{ t('auth.perfil.password_actual') }}</label>
+                        <input type="password" 
+                               class="form-control" 
+                               id="password_actual" 
+                               name="password_actual">
+                        <div class="form-text">{{ t('auth.perfil.password_actual_ayuda') }}</div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="password_nuevo" class="form-label">{{ t('auth.perfil.password_nuevo') }}</label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="password_nuevo" 
+                                   name="password_nuevo">
+                        </div>
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="confirmar_password" class="form-label">{{ t('auth.perfil.confirmar_password') }}</label>
+                            <input type="password" 
+                                   class="form-control" 
+                                   id="confirmar_password" 
+                                   name="confirmar_password">
+                        </div>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="{{ url_for('dashboard.index') }}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>{{ t('auth.perfil.cancelar') }}
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>{{ t('auth.perfil.guardar') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Zona de peligro -->
+        <div class="card shadow-sm mt-3 border-danger">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>{{ t('auth.perfil.zona_peligro') }}</h5>
+            </div>
+            <div class="card-body">
+                <p class="text-muted">{{ t('auth.perfil.eliminar_cuenta_aviso') }}</p>
+                <button type="button" class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#eliminarModal">
+                    <i class="fas fa-trash me-2"></i>{{ t('auth.perfil.eliminar_cuenta') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="eliminarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">{{ t('auth.perfil.confirmar_eliminacion') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>{{ t('auth.perfil.eliminar_cuenta_confirmacion') }}</p>
+                <p class="fw-bold text-danger">{{ t('auth.perfil.accion_irreversible') }}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ t('auth.perfil.cancelar') }}
+                </button>
+                <form action="{{ url_for('auth.eliminar_cuenta') }}" method="POST">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>{{ t('auth.perfil.eliminar_definitivamente') }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
