@@ -1,0 +1,106 @@
+{% macro grafico_pastel(id, datos, altura='300px') %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <canvas id="{{ id }}" style="height: {{ altura }}; width: 100%;"></canvas>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('{{ id }}');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let config = {{ datos|tojson|safe }};
+    
+    // Verificar que hay datos
+    if (config && config.data && config.data.datasets && config.data.datasets[0].data.length > 0) {
+        if (config.options && config.options.responsive === undefined) {
+            config.options.responsive = true;
+        }
+        if (config.options && config.options.maintainAspectRatio === undefined) {
+            config.options.maintainAspectRatio = false;
+        }
+        new Chart(ctx, config);
+    } else {
+        // Mostrar mensaje de no datos
+        canvas.parentElement.innerHTML = `
+            <div class="text-center py-5">
+                <i class="fas fa-chart-pie fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No hay datos suficientes</p>
+                <small class="text-muted">Registra gastos para ver el gráfico</small>
+            </div>
+        `;
+    }
+});
+</script>
+{% endmacro %}
+
+{% macro grafico_lineas(id, datos, altura='300px') %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <canvas id="{{ id }}" style="height: {{ altura }}; width: 100%;"></canvas>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('{{ id }}');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let config = {{ datos|tojson|safe }};
+    
+    // Verificar que hay datos
+    if (config && config.data && config.data.datasets && config.data.datasets[0].data.length > 0) {
+        if (config.options && config.options.responsive === undefined) {
+            config.options.responsive = true;
+        }
+        if (config.options && config.options.maintainAspectRatio === undefined) {
+            config.options.maintainAspectRatio = false;
+        }
+        new Chart(ctx, config);
+    } else {
+        canvas.parentElement.innerHTML = `
+            <div class="text-center py-5">
+                <i class="fas fa-chart-line fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No hay datos suficientes</p>
+                <small class="text-muted">Registra ingresos y gastos para ver evolución</small>
+            </div>
+        `;
+    }
+});
+</script>
+{% endmacro %}
+
+{% macro grafico_barras(id, datos, altura='300px') %}
+<div class="card shadow-sm">
+    <div class="card-body">
+        <canvas id="{{ id }}" style="height: {{ altura }}; width: 100%;"></canvas>
+    </div>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const canvas = document.getElementById('{{ id }}');
+    if (!canvas) return;
+    
+    const ctx = canvas.getContext('2d');
+    let config = {{ datos|tojson|safe }};
+    
+    if (config && config.data && config.data.datasets && config.data.datasets[0].data.length > 0) {
+        if (config.options && config.options.responsive === undefined) {
+            config.options.responsive = true;
+        }
+        if (config.options && config.options.maintainAspectRatio === undefined) {
+            config.options.maintainAspectRatio = false;
+        }
+        new Chart(ctx, config);
+    } else {
+        canvas.parentElement.innerHTML = `
+            <div class="text-center py-5">
+                <i class="fas fa-chart-bar fa-3x text-muted mb-3"></i>
+                <p class="text-muted">No hay datos suficientes</p>
+            </div>
+        `;
+    }
+});
+</script>
+{% endmacro %}

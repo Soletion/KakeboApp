@@ -1,0 +1,22 @@
+{% set alert_class = {
+    'success': 'alert-success',
+    'error': 'alert-danger',
+    'warning': 'alert-warning',
+    'info': 'alert-info'
+} %}
+
+<div class="alert {{ alert_class.get(category, 'alert-info') }} alert-dismissible fade show" role="alert">
+    {% if category == 'success' %}
+        <i class="fas fa-check-circle me-2"></i>
+    {% elif category == 'error' %}
+        <i class="fas fa-exclamation-circle me-2"></i>
+    {% elif category == 'warning' %}
+        <i class="fas fa-exclamation-triangle me-2"></i>
+    {% elif category == 'info' %}
+        <i class="fas fa-info-circle me-2"></i>
+    {% endif %}
+    
+    {{ t(message) if message is string else message }}
+    
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>

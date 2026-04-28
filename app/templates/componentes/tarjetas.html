@@ -1,0 +1,131 @@
+{# 
+    Componentes de tarjetas reutilizables para el dashboard
+    IMPORTANTE: Los macros no tienen acceso directo a la función t()
+    Por eso pasamos t() como parámetro o usamos valores pre-traducidos
+#}
+
+{# Tarjeta de resumen financiero #}
+{% macro tarjeta_resumen(titulo, valor, icono, color='primary', moneda=true) %}
+<div class="card shadow-sm h-100 border-{{ color }} border-top">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="text-muted mb-2">{{ titulo }}</h6>
+                <h3 class="mb-0">
+                    {% if moneda %}
+                        €{{ "%.2f"|format(valor) }}
+                    {% else %}
+                        {{ "%.1f"|format(valor) }}%
+                    {% endif %}
+                </h3>
+            </div>
+            <div class="bg-{{ color }} bg-opacity-10 rounded-circle p-3">
+                <i class="fas {{ icono }} fa-2x text-{{ color }}"></i>
+            </div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{# Tarjeta de gasto individual #}
+{% macro tarjeta_gasto(gasto) %}
+<div class="card mb-2 shadow-sm">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge bg-danger">
+                    <i class="fas fa-arrow-down"></i>
+                </span>
+                <span class="ms-2">{{ gasto.descripcion or 'Gasto' }}</span>
+                {% if gasto.categoria %}
+                <span class="badge bg-secondary ms-2">{{ gasto.categoria.nombre }}</span>
+                {% endif %}
+            </div>
+            <div>
+                <span class="fw-bold text-danger">€{{ "%.2f"|format(gasto.cantidad) }}</span>
+            </div>
+        </div>
+        <small class="text-muted ms-4">
+            <i class="far fa-calendar-alt me-1"></i>{{ gasto.fecha }}
+        </small>
+    </div>
+</div>
+{% endmacro %}
+
+{# Tarjeta de objetivo de ahorro #}
+{% macro tarjeta_objetivo(objetivo) %}
+<div class="card mb-3 shadow-sm">
+    <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start mb-2">
+            <h6 class="card-title mb-0">{{ objetivo.nombre }}</h6>
+            <span class="badge bg-primary">{{ "%.0f"|format(objetivo.progreso) }}%</span>
+        </div>
+        <div class="progress mb-2" style="height: 8px;">
+            <div class="progress-bar bg-success" 
+                 style="width: {{ objetivo.progreso }}%"></div>
+        </div>
+        <div class="d-flex justify-content-between small">
+            <span class="text-muted">
+                <i class="fas fa-euro-sign"></i> {{ "%.2f"|format(objetivo.cantidad_actual) }}
+            </span>
+            <span class="text-muted">
+                <i class="fas fa-bullseye"></i> {{ "%.2f"|format(objetivo.cantidad_objetivo) }}
+            </span>
+        </div>
+        {% if objetivo.dias_restantes is defined %}
+        <div class="mt-2 small text-muted">
+            <i class="far fa-clock"></i> {{ objetivo.dias_restantes }} días restantes
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}
+
+{# Tarjeta de categoría #}
+{% macro tarjeta_categoria(categoria, total_gastado, porcentaje) %}
+<div class="card mb-2 shadow-sm">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas {{ categoria.icono or 'fa-tag' }}" 
+                   style="color: {{ categoria.color or '#6c757d' }}"></i>
+                <span class="ms-2">{{ categoria.nombre_mostrar }}</span>
+            </div>
+            <div class="text-end">
+                <span class="fw-bold">€{{ "%.2f"|format(total_gastado) }}</span>
+                <br>
+                <small class="text-muted">{{ "%.1f"|format(porcentaje) }}%</small>
+            </div>
+        </div>
+        <div class="progress mt-1" style="height: 4px;">
+            <div class="progress-bar" 
+                 style="width: {{ porcentaje }}%; background-color: {{ categoria.color or '#0d6efd' }}"></div>
+        </div>
+    </div>
+</div>
+{% endmacro %}
+
+{# Tarjeta de ingreso individual #}
+{% macro tarjeta_ingreso(ingreso) %}
+<div class="card mb-2 shadow-sm">
+    <div class="card-body py-2">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <span class="badge bg-success">
+                    <i class="fas fa-arrow-up"></i>
+                </span>
+                <span class="ms-2">{{ ingreso.descripcion or 'Ingreso' }}</span>
+                {% if ingreso.es_fijo %}
+                <span class="badge bg-info ms-2">Fijo</span>
+                {% endif %}
+            </div>
+            <div>
+                <span class="fw-bold text-success">€{{ "%.2f"|format(ingreso.cantidad) }}</span>
+            </div>
+        </div>
+        <small class="text-muted ms-4">
+            <i class="far fa-calendar-alt me-1"></i>{{ ingreso.fecha }}
+        </small>
+    </div>
+</div>
+{% endmacro %}
