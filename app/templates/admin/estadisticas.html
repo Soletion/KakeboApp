@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Estadísticas Globales - Panel Admin{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-chart-line me-2"></i>Estadísticas Globales</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('admin.dashboard_admin') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Usuarios registrados por mes</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="graficoUsuarios" style="height: 300px;"></canvas>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Total de usuarios y lista -->
+    <div class="col-md-6 mb-4">
+        <div class="card shadow-sm h-100">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Total de usuarios registrados</h5>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    <div class="display-4 fw-bold text-primary">{{ usuarios|length }}</div>
+                    <p class="text-muted">usuarios en el sistema</p>
+                </div>
+                
+                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                    <table class="table table-sm table-hover">
+                        <thead>
+                            <tr>
+                                <th>Usuario</th>
+                                <th>Email</th>
+                                <th>Rol</th>
+                                <th>Fecha registro</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for usuario in usuarios %}
+                            <tr>
+                                <td>{{ usuario.username }}</td>
+                                <td>{{ usuario.email }}</td>
+                                <td>
+                                    <span class="badge bg-{{ 'danger' if usuario.es_administrador else 'secondary' }}">
+                                        {{ usuario.rol.nombre }}
+                                    </span>
+                                </td>
+                                <td>{{ usuario.fecha_registro.strftime('%d/%m/%Y') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Gráfico de usuarios por mes
+    const ctx = document.getElementById('graficoUsuarios').getContext('2d');
+    const datos = {
+        labels: [{% for item in usuarios_por_mes %}'{{ item.mes }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+        datasets: [{
+            label: 'Nuevos usuarios',
+            data: [{% for item in usuarios_por_mes %}{{ item.count }}{% if not loop.last %}, {% endif %}{% endfor %}],
+            backgroundColor: '#2c3e50',
+            borderColor: '#2c3e50',
+            borderWidth: 1
+        }]
+    };
+    new Chart(ctx, {
+        type: 'bar',
+        data: datos,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

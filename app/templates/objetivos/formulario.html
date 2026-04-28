@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('objetivos.' + ('editar' if objetivo else 'nuevo')) }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    {% if objetivo %}
+                        <i class="fas fa-edit me-2"></i>{{ t('objetivos.editar_titulo') }}
+                    {% else %}
+                        <i class="fas fa-plus-circle me-2"></i>{{ t('objetivos.nuevo_titulo') }}
+                    {% endif %}
+                </h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('objetivos.nuevo' if not objetivo else 'objetivos.editar', id=objetivo.id if objetivo else None) }}" id="objetivoForm" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <!-- Campo nombre -->
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label">{{ t('objetivos.nombre') }} <span class="text-danger">*</span></label>
+                        <input type="text" 
+                               class="form-control form-control-lg" 
+                               id="nombre" 
+                               name="nombre" 
+                               value="{{ objetivo.nombre if objetivo else '' }}"
+                               required
+                               placeholder="{{ t('objetivos.nombre_placeholder') }}">
+                    </div>
+                    
+                    <!-- Campo descripción -->
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">{{ t('objetivos.descripcion') }}</label>
+                        <textarea class="form-control" 
+                                  id="descripcion" 
+                                  name="descripcion" 
+                                  rows="3"
+                                  placeholder="{{ t('objetivos.descripcion_placeholder') }}">{{ objetivo.descripcion if objetivo else '' }}</textarea>
+                    </div>
+                    
+                    <!-- Campo cantidad objetivo -->
+                    <div class="mb-3">
+                        <label for="cantidad_objetivo" class="form-label">{{ t('objetivos.cantidad_objetivo') }} <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            <input type="number" 
+                                   class="form-control form-control-lg" 
+                                   id="cantidad_objetivo" 
+                                   name="cantidad_objetivo" 
+                                   value="{{ objetivo.cantidad_objetivo if objetivo else '' }}"
+                                   step="0.01" 
+                                   min="0.01"
+                                   required
+                                   placeholder="{{ t('objetivos.cantidad_objetivo_placeholder') }}">
+                        </div>
+                    </div>
+                    
+                    <!-- Campo cantidad actual -->
+                    <div class="mb-3">
+                        <label for="cantidad_actual" class="form-label">{{ t('objetivos.cantidad_actual') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="cantidad_actual" 
+                                   name="cantidad_actual" 
+                                   value="{{ objetivo.cantidad_actual if objetivo else 0 }}"
+                                   step="0.01" 
+                                   min="0"
+                                   placeholder="{{ t('objetivos.cantidad_actual_placeholder') }}">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Campo fecha inicio -->
+                        <div class="col-md-6 mb-3">
+                            <label for="fecha_inicio" class="form-label">{{ t('objetivos.fecha_inicio') }}</label>
+                            <input type="date" 
+                                   class="form-control" 
+                                   id="fecha_inicio" 
+                                   name="fecha_inicio" 
+                                   value="{{ objetivo.fecha_inicio if objetivo else fecha_actual }}">
+                        </div>
+                        
+                        <!-- Campo fecha límite -->
+                        <div class="col-md-6 mb-3">
+                            <label for="fecha_limite" class="form-label">{{ t('objetivos.fecha_limite') }}</label>
+                            <input type="date" 
+                                   class="form-control" 
+                                   id="fecha_limite" 
+                                   name="fecha_limite" 
+                                   value="{{ objetivo.fecha_limite if objetivo else '' }}">
+                            <div class="form-text">{{ t('objetivos.sin_fecha_limite') }}</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="{{ url_for('objetivos.listado') }}" class="btn btn-outline-secondary flex-fill">
+                            <i class="fas fa-times me-2"></i>{{ t('objetivos.cancelar') }}
+                        </a>
+                        
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="fas fa-save me-2"></i>{{ t('objetivos.guardar') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('objetivoForm').addEventListener('submit', function(e) {
+    const nombre = document.getElementById('nombre');
+    const cantidad = document.getElementById('cantidad_objetivo');
+    
+    if (!nombre.value.trim()) {
+        e.preventDefault();
+        nombre.classList.add('is-invalid');
+    } else {
+        nombre.classList.remove('is-invalid');
+    }
+    
+    if (!cantidad.value || cantidad.value <= 0) {
+        e.preventDefault();
+        cantidad.classList.add('is-invalid');
+    } else {
+        cantidad.classList.remove('is-invalid');
+    }
+});
+
+// Validar que la fecha límite no sea anterior a la fecha de inicio
+const fechaInicio = document.getElementById('fecha_inicio');
+const fechaLimite = document.getElementById('fecha_limite');
+
+function validarFechas() {
+    if (fechaInicio.value && fechaLimite.value) {
+        if (new Date(fechaLimite.value) < new Date(fechaInicio.value)) {
+            fechaLimite.classList.add('is-invalid');
+        } else {
+            fechaLimite.classList.remove('is-invalid');
+        }
+    }
+}
+
+fechaInicio.addEventListener('change', validarFechas);
+fechaLimite.addEventListener('change', validarFechas);
+</script>
+{% endblock %}

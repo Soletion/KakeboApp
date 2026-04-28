@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}Detalle de Usuario - Panel Admin{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-user-circle me-2"></i>Detalle de Usuario</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('admin.listar_usuarios') }}" class="btn btn-secondary">
+            <i class="fas fa-arrow-left me-2"></i>Volver
+        </a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <div class="bg-primary text-white rounded-circle d-inline-flex justify-content-center align-items-center" 
+                         style="width: 100px; height: 100px;">
+                        <i class="fas fa-user fa-3x"></i>
+                    </div>
+                </div>
+                <h4>{{ usuario.nombre }} {{ usuario.apellidos or '' }}</h4>
+                <p class="text-muted">@{{ usuario.username }}</p>
+                
+                <hr>
+                
+                <div class="text-start">
+                    <p><i class="fas fa-envelope me-2 text-primary"></i> {{ usuario.email }}</p>
+                    <p><i class="fas fa-calendar me-2 text-primary"></i> 
+                        Registro: {{ usuario.fecha_registro.strftime('%d/%m/%Y') }}
+                    </p>
+                    <p>
+                        <i class="fas fa-tag me-2 text-primary"></i>
+                        Rol: 
+                        <span class="badge bg-{{ 'danger' if usuario.es_administrador else 'secondary' }}">
+                            {{ usuario.rol.nombre }}
+                        </span>
+                    </p>
+                    <p>
+                        <i class="fas fa-circle me-2 text-primary"></i>
+                        Estado:
+                        {% if usuario.activo %}
+                            <span class="badge bg-success">Activo</span>
+                        {% else %}
+                            <span class="badge bg-danger">Inactivo</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Estadísticas del Usuario</h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center mb-4">
+                    <div class="col-4">
+                        <h3>{{ num_gastos }}</h3>
+                        <p class="text-muted">Gastos</p>
+                    </div>
+                    <div class="col-4">
+                        <h3>{{ num_ingresos }}</h3>
+                        <p class="text-muted">Ingresos</p>
+                    </div>
+                    <div class="col-4">
+                        <h3>€{{ "%.2f"|format(gastos_totales) }}</h3>
+                        <p class="text-muted">Total Gastos</p>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <h6 class="mb-3">Acciones de Administración</h6>
+                
+                <form method="POST" action="{{ url_for('admin.cambiar_rol_usuario', id=usuario.id) }}" class="mb-3">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <div class="row g-2">
+                        <div class="col-auto">
+                            <select name="rol_id" class="form-select">
+                                <option value="1" {{ 'selected' if not usuario.es_administrador }}>Usuario</option>
+                                <option value="2" {{ 'selected' if usuario.es_administrador }}>Administrador</option>
+                            </select>
+                        </div>
+                        <div class="col-auto">
+                            <button type="submit" class="btn btn-warning">
+                                <i class="fas fa-exchange-alt me-2"></i>Cambiar Rol
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                
+                <form method="POST" action="{{ url_for('admin.toggle_usuario_activo', id=usuario.id) }}">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    {% if usuario.activo %}
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-ban me-2"></i>Desactivar Usuario
+                        </button>
+                    {% else %}
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check me-2"></i>Activar Usuario
+                        </button>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

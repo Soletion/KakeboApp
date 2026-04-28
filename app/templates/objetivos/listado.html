@@ -1,0 +1,214 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('objetivos.titulo') }} - Kakebo{% endblock %}
+
+{% block header %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-bullseye text-primary me-2"></i>{{ t('objetivos.titulo') }}</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('objetivos.nuevo') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>{{ t('objetivos.nuevo') }}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Resumen global de objetivos -->
+<div class="row mb-4">
+    <div class="col-md-4 mb-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('objetivos.total_objetivo') }}</h6>
+                <h3>€{{ "%.2f"|format(resumen.total_objetivo) }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('objetivos.acumulado') }}</h6>
+                <h3>€{{ "%.2f"|format(resumen.total_actual) }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4 mb-3">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('objetivos.progreso_global') }}</h6>
+                <h3>{{ "%.1f"|format(resumen.progreso_global) }}%</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Objetivos activos -->
+{% if objetivos_activos %}
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">{{ t('objetivos.activos') }}</h5>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            {% from 'componentes/tarjetas.html' import tarjeta_objetivo %}
+            {% for objetivo in objetivos_activos %}
+                <div class="col-md-6 col-lg-4 mb-3">
+                    {{ tarjeta_objetivo(objetivo) }}
+                    <div class="d-flex gap-2 mt-2">
+                        <button class="btn btn-sm btn-outline-primary flex-fill" 
+                                onclick="actualizarProgreso({{ objetivo.id }})">
+                            <i class="fas fa-plus me-1"></i>{{ t('objetivos.actualizar') }}
+                        </button>
+                        <a href="{{ url_for('objetivos.editar', id=objetivo.id) }}" 
+                           class="btn btn-sm btn-outline-secondary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <button class="btn btn-sm btn-outline-success" 
+                                onclick="completarObjetivo({{ objetivo.id }})"
+                                title="{{ t('objetivos.marcar_completado') }}">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Objetivos completados -->
+{% if objetivos_completados %}
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h5 class="mb-0">{{ t('objetivos.completados') }}</h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>{{ t('objetivos.nombre') }}</th>
+                        <th>{{ t('objetivos.cantidad') }}</th>
+                        <th>{{ t('objetivos.fecha_completado') }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for objetivo in objetivos_completados %}
+                        <tr class="table-success">
+                            <td>{{ objetivo.nombre }}</td>
+                            <td>€{{ "%.2f"|format(objetivo.cantidad_objetivo) }}</td>
+                            <td>{{ objetivo.actualizado.strftime('%d/%m/%Y') }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if not objetivos_activos and not objetivos_completados %}
+<div class="text-center py-5">
+    <i class="fas fa-bullseye fa-4x text-muted mb-3"></i>
+    <h5>{{ t('objetivos.no_objetivos') }}</h5>
+    <p class="text-muted">{{ t('objetivos.no_objetivos_descripcion') }}</p>
+    <a href="{{ url_for('objetivos.nuevo') }}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>{{ t('objetivos.crear_primero') }}
+    </a>
+</div>
+{% endif %}
+
+<!-- Modal para actualizar progreso -->
+<div class="modal fade" id="actualizarModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">{{ t('objetivos.actualizar_progreso') }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="actualizarForm">
+                    <input type="hidden" id="objetivo_id" name="objetivo_id">
+                    
+                    <div class="mb-3">
+                        <label for="nueva_cantidad" class="form-label">{{ t('objetivos.nueva_cantidad') }}</label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            <input type="number" 
+                                   class="form-control" 
+                                   id="nueva_cantidad" 
+                                   name="nueva_cantidad" 
+                                   step="0.01" 
+                                   min="0"
+                                   required>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    {{ t('objetivos.cancelar') }}
+                </button>
+                <button type="button" class="btn btn-primary" onclick="guardarActualizacion()">
+                    {{ t('objetivos.guardar') }}
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let objetivoSeleccionado = null;
+const actualizarModal = new bootstrap.Modal(document.getElementById('actualizarModal'));
+
+function actualizarProgreso(objetivoId) {
+    objetivoSeleccionado = objetivoId;
+    document.getElementById('objetivo_id').value = objetivoId;
+    document.getElementById('nueva_cantidad').value = '';
+    actualizarModal.show();
+}
+
+function completarObjetivo(objetivoId) {
+    if (confirm('{{ t('objetivos.confirmar_completado') }}')) {
+        fetch(`/objetivos/${objetivoId}/completar`, {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token() }}'
+            }
+        }).then(response => {
+            if (response.ok) {
+                location.reload();
+            }
+        });
+    }
+}
+
+function guardarActualizacion() {
+    const cantidad = document.getElementById('nueva_cantidad').value;
+    
+    fetch(`/objetivos/${objetivoSeleccionado}/actualizar-cantidad`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ cantidad: parseFloat(cantidad) })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            actualizarModal.hide();
+            location.reload();
+        } else {
+            alert('Error: ' + data.error);
+        }
+    });
+}
+</script>
+{% endblock %}
