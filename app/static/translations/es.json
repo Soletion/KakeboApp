@@ -1,0 +1,356 @@
+{
+  "app": {
+    "nombre": "Kakebo",
+    "descripcion": "Planificación financiera personal con método japonés"
+  },
+  
+  "nav": {
+    "titulo": "Kakebo",
+    "dashboard": "Dashboard",
+    "gastos": "Gastos",
+    "ingresos": "Ingresos",
+    "objetivos": "Objetivos",
+    "perfil": "Mi Perfil",
+    "salir": "Salir",
+    "entrar": "Entrar",
+    "registro": "Registrarse",
+    "idioma": {
+      "es": "Español",
+      "en": "Inglés"
+    }
+  },
+  
+  "footer": {
+    "slogan": "Controla tus finanzas con el método japonés",
+    "derechos": "Todos los derechos reservados"
+  },
+  
+  "auth": {
+    "login": {
+      "titulo": "Iniciar Sesión",
+      "email": "Correo electrónico",
+      "email_placeholder": "tucorreo@ejemplo.com",
+      "password": "Contraseña",
+      "password_placeholder": "Tu contraseña",
+      "recordar": "Recordarme",
+      "boton": "Entrar",
+      "no_tienes_cuenta": "¿No tienes cuenta?",
+      "registrarse": "Regístrate aquí",
+      "olvide_password": "¿Olvidaste tu contraseña?"
+    },
+    
+    "registro": {
+      "titulo": "Crear Cuenta",
+      "nombre": "Nombre",
+      "apellidos": "Apellidos",
+      "email": "Correo electrónico",
+      "email_ayuda": "Nunca compartiremos tu email",
+      "usuario": "Nombre de usuario",
+      "usuario_ayuda": "Mínimo 3 caracteres",
+      "password": "Contraseña",
+      "confirmar_password": "Confirmar contraseña",
+      "password_requisitos": "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número",
+      "boton": "Registrarse",
+      "volver_login": "Volver al login"
+    },
+    
+    "perfil": {
+      "titulo": "Mi Perfil",
+      "miembro_desde": "Miembro desde",
+      "idioma": "Idioma preferido",
+      "cambiar_idioma": "Cambiar idioma",
+      "estadisticas": "Estadísticas",
+      "gastos": "Gastos",
+      "ingresos": "Ingresos",
+      "objetivos": "Objetivos",
+      "editar_perfil": "Editar Perfil",
+      "datos_personales": "Datos Personales",
+      "nombre": "Nombre",
+      "apellidos": "Apellidos",
+      "email": "Email",
+      "cambiar_password": "Cambiar Contraseña",
+      "password_actual": "Contraseña actual",
+      "password_actual_ayuda": "Deja en blanco si no quieres cambiarla",
+      "password_nuevo": "Nueva contraseña",
+      "confirmar_password": "Confirmar nueva contraseña",
+      "guardar": "Guardar cambios",
+      "cancelar": "Cancelar",
+      "zona_peligro": "Zona de peligro",
+      "eliminar_cuenta_aviso": "Una vez que elimines tu cuenta, no hay vuelta atrás. Todos tus datos serán eliminados permanentemente.",
+      "eliminar_cuenta": "Eliminar mi cuenta",
+      "confirmar_eliminacion": "¿Estás seguro?",
+      "eliminar_cuenta_confirmacion": "Esta acción no se puede deshacer. Todos tus datos serán eliminados.",
+      "accion_irreversible": "Esta acción es irreversible",
+      "eliminar_definitivamente": "Eliminar definitivamente"
+    },
+    
+    "error": {
+      "password_mismatch": "Las contraseñas no coinciden",
+      "email_invalid": "El email no es válido",
+      "username_invalid": "El usuario debe tener entre 3 y 20 caracteres (letras, números y _)",
+      "password_weak": "La contraseña debe tener al menos 8 caracteres, una mayúscula y un número",
+      "name_required": "El nombre es obligatorio",
+      "email_exists": "Este email ya está registrado",
+      "username_exists": "Este nombre de usuario ya existe",
+      "required_fields": "Todos los campos son obligatorios",
+      "too_many_attempts": "Demasiados intentos fallidos. Intenta más tarde",
+      "inactive_account": "Tu cuenta está desactivada",
+      "invalid_credentials": "Email o contraseña incorrectos",
+      "current_password_required": "Debes introducir tu contraseña actual",
+      "current_password_invalid": "La contraseña actual no es correcta",
+      "email_required": "El email es obligatorio",
+      "general": "Ha ocurrido un error"
+    },
+    
+    "success": {
+      "registration": "¡Registro completado! Ya puedes iniciar sesión",
+      "login": "¡Bienvenido de nuevo!",
+      "logout": "Has cerrado sesión correctamente",
+      "profile_updated": "Perfil actualizado correctamente",
+      "language_changed": "Idioma cambiado correctamente",
+      "recovery_sent": "Si el email existe, recibirás instrucciones para recuperar tu contraseña"
+    }
+  },
+  
+  "dashboard": {
+    "titulo": "Dashboard",
+    "bienvenida": "¡Hola, {nombre}!",
+    "resumen_mensual": "Resumen de {mes}",
+    "ingresos": "Ingresos",
+    "gastos": "Gastos",
+    "ahorro": "Ahorro",
+    "porcentaje_ahorro": "% Ahorro",
+    "ultimos_gastos": "Últimos gastos",
+    "ultimos_ingresos": "Últimos ingresos",
+    "ver_todos": "Ver todos",
+    "sin_gastos": "No hay gastos registrados",
+    "sin_ingresos": "No hay ingresos registrados",
+    "registrar_gasto": "Registrar gasto",
+    "registrar_ingreso": "Registrar ingreso",
+    "objetivos_activos": "Objetivos activos",
+    "gestionar": "Gestionar",
+    "fijo": "Fijo",
+    "variable": "Variable",
+    "media_diaria": "Media diaria",
+    "dias": "días",
+    "resumen_mensual": "Resumen Mensual",
+    "ver": "Ver",
+    "gastos_por_categoria": "Gastos por categoría",
+    "categoria": "Categoría",
+    "cantidad": "Cantidad",
+    "total": "Total",
+    "detalle_gastos": "Detalle de gastos",
+    "nuevo_gasto": "Nuevo gasto",
+    "sin_gastos_mes": "No hay gastos este mes",
+    "ingresos_mes": "Ingresos del mes",
+    "nuevo_ingreso": "Nuevo ingreso",
+    "fecha": "Fecha",
+    "descripcion": "Descripción",
+    "tipo": "Tipo",
+    "total_ingresos": "Total ingresos",
+    "sin_ingresos_mes": "No hay ingresos este mes",
+    "error": {
+      "general": "Error al cargar el dashboard",
+      "invalid_month": "Mes no válido"
+    }
+  },
+  
+  "gastos": {
+    "titulo": "Gestión de Gastos",
+    "nuevo": "Nuevo gasto",
+    "nuevo_titulo": "Registrar nuevo gasto",
+    "editar": "Editar gasto",
+    "editar_titulo": "Editar gasto",
+    "eliminar": "Eliminar",
+    "fecha": "Fecha",
+    "categoria": "Categoría",
+    "descripcion": "Descripción",
+    "cantidad": "Cantidad",
+    "acciones": "Acciones",
+    "total_gastos": "Total gastos",
+    "total_registros": "Total registros",
+    "filtrar": "Filtrar",
+    "desde": "Desde",
+    "hasta": "Hasta",
+    "todas_categorias": "Todas las categorías",
+    "seleccionar_categoria": "Selecciona una categoría",
+    "cantidad_placeholder": "0.00",
+    "descripcion_placeholder": "Describe el gasto...",
+    "guardar": "Guardar",
+    "guardar_y_otro": "Guardar y otro",
+    "cancelar": "Cancelar",
+    "informacion": "Información",
+    "info_categorias": "Selecciona la categoría que mejor describa tu gasto",
+    "info_fecha": "Puedes modificar la fecha si el gasto es de otro día",
+    "info_descripcion": "Añade una descripción para recordar mejor el gasto",
+    "no_gastos": "No hay gastos registrados",
+    "no_gastos_descripcion": "Comienza registrando tu primer gasto",
+    "registrar_primero": "Registrar primer gasto",
+    "paginacion": "Paginación",
+    "confirmar_eliminacion": "¿Estás seguro de que quieres eliminar este gasto?",
+    "error": {
+      "invalid_amount": "La cantidad debe ser mayor que 0",
+      "category_required": "Debes seleccionar una categoría",
+      "not_owner": "No tienes permiso para modificar este gasto",
+      "general": "Error al procesar la operación"
+    },
+    "success": {
+      "created": "Gasto creado correctamente",
+      "updated": "Gasto actualizado correctamente",
+      "deleted": "Gasto eliminado correctamente"
+    }
+  },
+  
+  "ingresos": {
+    "titulo": "Gestión de Ingresos",
+    "nuevo": "Nuevo ingreso",
+    "nuevo_titulo": "Registrar nuevo ingreso",
+    "editar": "Editar ingreso",
+    "editar_titulo": "Editar ingreso",
+    "eliminar": "Eliminar",
+    "fecha": "Fecha",
+    "descripcion": "Descripción",
+    "cantidad": "Cantidad",
+    "tipo": "Tipo",
+    "fijo": "Fijo",
+    "variable": "Variable",
+    "acciones": "Acciones",
+    "total_ingresos": "Total ingresos",
+    "total_fijos": "Total fijos",
+    "total_variables": "Total variables",
+    "total_registros": "Total registros",
+    "filtrar": "Filtrar",
+    "desde": "Desde",
+    "hasta": "Hasta",
+    "todos": "Todos",
+    "solo_fijos": "Solo fijos",
+    "solo_variables": "Solo variables",
+    "cantidad_placeholder": "0.00",
+    "descripcion_placeholder": "Describe el ingreso...",
+    "guardar": "Guardar",
+    "guardar_y_otro": "Guardar y otro",
+    "cancelar": "Cancelar",
+    "informacion": "Información",
+    "info_fijos": "Los ingresos fijos se repiten cada mes (nómina, etc.)",
+    "info_fecha": "La fecha del ingreso",
+    "info_descripcion": "Añade una descripción para identificar mejor el ingreso",
+    "no_ingresos": "No hay ingresos registrados",
+    "no_ingresos_descripcion": "Comienza registrando tu primer ingreso",
+    "registrar_primero": "Registrar primer ingreso",
+    "confirmar_eliminacion": "¿Estás seguro de que quieres eliminar este ingreso?",
+    "error": {
+      "invalid_amount": "La cantidad debe ser mayor que 0",
+      "not_owner": "No tienes permiso para modificar este ingreso",
+      "general": "Error al procesar la operación"
+    },
+    "success": {
+      "created": "Ingreso creado correctamente",
+      "updated": "Ingreso actualizado correctamente",
+      "deleted": "Ingreso eliminado correctamente"
+    }
+  },
+  
+  "objetivos": {
+    "titulo": "Objetivos de Ahorro",
+    "nuevo": "Nuevo objetivo",
+    "nuevo_titulo": "Crear nuevo objetivo",
+    "editar": "Editar objetivo",
+    "editar_titulo": "Editar objetivo",
+    "eliminar": "Eliminar",
+    "nombre": "Nombre",
+    "descripcion": "Descripción",
+    "cantidad_objetivo": "Cantidad objetivo",
+    "cantidad_actual": "Cantidad actual",
+    "fecha_inicio": "Fecha de inicio",
+    "fecha_limite": "Fecha límite",
+    "progreso": "Progreso",
+    "estado": "Estado",
+    "activo": "Activo",
+    "completado": "Completado",
+    "cancelado": "Cancelado",
+    "activos": "Objetivos activos",
+    "completados": "Objetivos completados",
+    "total_objetivo": "Total objetivo",
+    "acumulado": "Acumulado",
+    "progreso_global": "Progreso global",
+    "dias_restantes": "días restantes",
+    "actualizar": "Actualizar",
+    "actualizar_progreso": "Actualizar progreso",
+    "nueva_cantidad": "Nueva cantidad",
+    "guardar": "Guardar",
+    "cancelar": "Cancelar",
+    "marcar_completado": "Marcar como completado",
+    "confirmar_completado": "¿Estás seguro de que quieres marcar este objetivo como completado?",
+    "no_objetivos": "No hay objetivos de ahorro",
+    "no_objetivos_descripcion": "Define tus metas de ahorro para mantener la motivación",
+    "crear_primero": "Crear primer objetivo",
+    "error": {
+      "name_required": "El nombre es obligatorio",
+      "invalid_goal_amount": "La cantidad objetivo debe ser mayor que 0",
+      "invalid_current_amount": "La cantidad actual no puede ser negativa",
+      "not_owner": "No tienes permiso para modificar este objetivo",
+      "general": "Error al procesar la operación"
+    },
+    "success": {
+      "created": "Objetivo creado correctamente",
+      "updated": "Objetivo actualizado correctamente",
+      "deleted": "Objetivo eliminado correctamente",
+      "completed": "¡Felicidades! Has completado el objetivo"
+    }
+  },
+  
+  "categorias": {
+    "esenciales": "Gastos esenciales",
+    "esenciales_desc": "Gastos necesarios para vivir (vivienda, comida, servicios)",
+    "prescindibles": "Gastos prescindibles",
+    "prescindibles_desc": "Gastos no esenciales pero habituales",
+    "ocio": "Ocio",
+    "ocio_desc": "Entretenimiento, viajes, restaurantes",
+    "imprevistos": "Imprevistos",
+    "imprevistos_desc": "Gastos inesperados y emergencias"
+  },
+  
+  "formularios": {
+    "seleccionar": "Selecciona una opción",
+    "guardar": "Guardar",
+    "cancelar": "Cancelar",
+    "eliminar": "Eliminar",
+    "editar": "Editar",
+    "volver": "Volver",
+    "confirmar_accion": "¿Estás seguro?",
+    "campo_obligatorio": "Este campo es obligatorio",
+    "campo_invalido": "Este campo no es válido"
+  },
+  
+  "errores": {
+    "404": {
+      "titulo": "Página no encontrada",
+      "mensaje": "La página que buscas no existe o ha sido movida",
+      "volver": "Volver al inicio"
+    },
+    "500": {
+      "titulo": "Error interno",
+      "mensaje": "Ha ocurrido un error inesperado. Por favor, inténtalo más tarde",
+      "volver": "Volver al inicio"
+    },
+    "general": "Ha ocurrido un error"
+  },
+  
+  "seguridad": {
+    "csrf_error": "Error de validación. Por favor, recarga la página"
+  },
+  
+  "tiempo": {
+    "hoy": "Hoy",
+    "ayer": "Ayer",
+    "esta_semana": "Esta semana",
+    "este_mes": "Este mes",
+    "este_año": "Este año"
+  },
+  
+  "moneda": {
+    "simbolo": "€",
+    "nombre": "Euro",
+    "formato": "{cantidad}€"
+  }
+}

@@ -1,0 +1,382 @@
+{
+  "app": {
+    "nombre": "Kakebo",
+    "descripcion": "Personal financial planning with Japanese method"
+  },
+  
+  "nav": {
+    "titulo": "Kakebo",
+    "admin_panel": "Admin Panel",
+    "dashboard": "Dashboard",
+    "gastos": "Expenses",
+    "ingresos": "Income",
+    "objetivos": "Goals",
+    "perfil": "My Profile",
+    "salir": "Logout",
+    "entrar": "Login",
+    "registro": "Sign Up",
+    "idioma": {
+      "es": "Spanish",
+      "en": "English"
+    },
+    "admin_dashboard": "Admin Panel",
+    "admin_usuarios": "Users",
+    "admin_estadisticas": "Statistics"
+  },
+  
+  "footer": {
+    "slogan": "Control your finances with the Japanese method",
+    "derechos": "All rights reserved"
+  },
+  
+  "auth": {
+    "login": {
+      "titulo": "Login",
+      "email": "Email address",
+      "email_placeholder": "youremail@example.com",
+      "password": "Password",
+      "password_placeholder": "Your password",
+      "recordar": "Remember me",
+      "boton": "Sign in",
+      "no_tienes_cuenta": "Don't have an account?",
+      "registrarse": "Sign up here",
+      "olvide_password": "Forgot your password?"
+    },
+    
+    "registro": {
+      "titulo": "Create Account",
+      "nombre": "First name",
+      "apellidos": "Last name",
+      "email": "Email address",
+      "email_ayuda": "We'll never share your email",
+      "usuario": "Username",
+      "usuario_ayuda": "Minimum 3 characters",
+      "password": "Password",
+      "confirmar_password": "Confirm password",
+      "password_requisitos": "Password must have at least 8 characters, one uppercase letter and one number",
+      "boton": "Sign up",
+      "volver_login": "Back to login"
+    },
+
+    "recuperar": {
+    "titulo": "Recover Password",
+    "instrucciones": "Enter your email address and we'll send you a link to reset your password.",
+    "email": "Email address",
+    "email_placeholder": "your@email.com",
+    "email_ayuda": "We'll send instructions to this email",
+    "enviar": "Send instructions",
+    "volver_login": "Back to login",
+    "tiempo_espera": "The recovery link will be valid for 24 hours",
+    "no_recibido": "Didn't receive the email?",
+    "check_spam": "Check your spam or junk folder",
+    "check_email": "Make sure you entered the correct email address",
+    "tiempo_entrega": "The email may take a few minutes to arrive"
+    },
+    
+    "perfil": {
+      "titulo": "My Profile",
+      "miembro_desde": "Member since",
+      "idioma": "Preferred language",
+      "cambiar_idioma": "Change language",
+      "estadisticas": "Statistics",
+      "gastos": "Expenses",
+      "ingresos": "Income",
+      "objetivos": "Goals",
+      "editar_perfil": "Edit Profile",
+      "datos_personales": "Personal Information",
+      "nombre": "First name",
+      "apellidos": "Last name",
+      "email": "Email",
+      "cambiar_password": "Change Password",
+      "password_actual": "Current password",
+      "password_actual_ayuda": "Leave blank if you don't want to change it",
+      "password_nuevo": "New password",
+      "confirmar_password": "Confirm new password",
+      "guardar": "Save changes",
+      "cancelar": "Cancel",
+      "zona_peligro": "Danger zone",
+      "eliminar_cuenta_aviso": "Once you delete your account, there is no going back. All your data will be permanently deleted.",
+      "eliminar_cuenta": "Delete my account",
+      "confirmar_eliminacion": "Are you sure?",
+      "eliminar_cuenta_confirmacion": "This action cannot be undone. All your data will be deleted.",
+      "accion_irreversible": "This action is irreversible",
+      "eliminar_definitivamente": "Delete permanently"
+    },
+    
+    "error": {
+      "password_mismatch": "Passwords do not match",
+      "email_invalid": "Invalid email address",
+      "username_invalid": "Username must be 3-20 characters (letters, numbers and _)",
+      "password_weak": "Password must have at least 8 characters, one uppercase letter and one number",
+      "name_required": "First name is required",
+      "email_exists": "This email is already registered",
+      "username_exists": "This username already exists",
+      "required_fields": "All fields are required",
+      "too_many_attempts": "Too many failed attempts. Try again later",
+      "inactive_account": "Your account is deactivated",
+      "invalid_credentials": "Invalid email or password",
+      "current_password_required": "You must enter your current password",
+      "current_password_invalid": "Current password is incorrect",
+      "email_required": "Email is required",
+      "general": "An error has occurred"
+    },
+    
+    "success": {
+      "registration": "Registration complete! You can now log in",
+      "login": "Welcome back!",
+      "logout": "You have been logged out successfully",
+      "profile_updated": "Profile updated successfully",
+      "language_changed": "Language changed successfully",
+      "recovery_sent": "If the email exists, you will receive instructions to recover your password",
+      "account_deleted": "Your account has been successfully deleted"
+    }
+  },
+  
+  "dashboard": {
+    "titulo": "Dashboard",
+    "bienvenida": "Hello, {nombre}!",
+    "resumen_mensual": "Summary for {mes}",
+    "ingresos": "Income",
+    "gastos": "Expenses",
+    "ahorro": "Savings",
+    "porcentaje_ahorro": "Savings %",
+    "ultimos_gastos": "Latest expenses",
+    "ultimos_ingresos": "Latest income",
+    "ver_todos": "View all",
+    "sin_gastos": "No expenses registered",
+    "sin_ingresos": "No income registered",
+    "registrar_gasto": "Register expense",
+    "registrar_ingreso": "Register income",
+    "objetivos_activos": "Active goals",
+    "gestionar": "Manage",
+    "fijo": "Fixed",
+    "variable": "Variable",
+    "media_diaria": "Daily average",
+    "dias": "days",
+    "resumen_mensual": "Monthly Summary",
+    "ver": "View",
+    "gastos_por_categoria": "Expenses by category",
+    "categoria": "Category",
+    "cantidad": "Amount",
+    "total": "Total",
+    "detalle_gastos": "Expense details",
+    "nuevo_gasto": "New expense",
+    "sin_gastos_mes": "No expenses this month",
+    "ingresos_mes": "Monthly income",
+    "nuevo_ingreso": "New income",
+    "fecha": "Date",
+    "descripcion": "Description",
+    "tipo": "Type",
+    "total_ingresos": "Total income",
+    "sin_ingresos_mes": "No income this month",
+    "error": {
+      "general": "Error loading dashboard",
+      "invalid_month": "Invalid month"
+    }
+  },
+  
+  "gastos": {
+    "titulo": "Expense Management",
+    "nuevo": "New expense",
+    "nuevo_titulo": "Register new expense",
+    "editar": "Edit expense",
+    "editar_titulo": "Edit expense",
+    "eliminar": "Delete",
+    "fecha": "Date",
+    "categoria": "Category",
+    "descripcion": "Description",
+    "cantidad": "Amount",
+    "acciones": "Actions",
+    "total_gastos": "Total expenses",
+    "total_registros": "Total records",
+    "filtrar": "Filter",
+    "desde": "From",
+    "hasta": "To",
+    "todas_categorias": "All categories",
+    "seleccionar_categoria": "Select a category",
+    "cantidad_placeholder": "0.00",
+    "descripcion_placeholder": "Describe the expense...",
+    "guardar": "Save",
+    "guardar_y_otro": "Save and new",
+    "cancelar": "Cancel",
+    "informacion": "Information",
+    "info_categorias": "Select the category that best describes your expense",
+    "info_fecha": "You can change the date if the expense is from another day",
+    "info_descripcion": "Add a description to better remember the expense",
+    "no_gastos": "No expenses registered",
+    "no_gastos_descripcion": "Start by registering your first expense",
+    "registrar_primero": "Register first expense",
+    "paginacion": "Pagination",
+    "confirmar_eliminacion": "Are you sure you want to delete this expense?",
+    "error": {
+      "invalid_amount": "Amount must be greater than 0",
+      "category_required": "You must select a category",
+      "not_owner": "You don't have permission to modify this expense",
+      "general": "Error processing operation"
+    },
+    "success": {
+      "created": "Expense created successfully",
+      "updated": "Expense updated successfully",
+      "deleted": "Expense deleted successfully"
+    }
+  },
+  
+  "ingresos": {
+    "titulo": "Income Management",
+    "nuevo": "New income",
+    "nuevo_titulo": "Register new income",
+    "editar": "Edit income",
+    "editar_titulo": "Edit income",
+    "eliminar": "Delete",
+    "fecha": "Date",
+    "descripcion": "Description",
+    "cantidad": "Amount",
+    "tipo": "Type",
+    "fijo": "Fixed",
+    "variable": "Variable",
+    "acciones": "Actions",
+    "total_ingresos": "Total income",
+    "total_fijos": "Total fixed",
+    "total_variables": "Total variable",
+    "total_registros": "Total records",
+    "filtrar": "Filter",
+    "desde": "From",
+    "hasta": "To",
+    "todos": "All",
+    "solo_fijos": "Fixed only",
+    "solo_variables": "Variable only",
+    "cantidad_placeholder": "0.00",
+    "descripcion_placeholder": "Describe the income...",
+    "guardar": "Save",
+    "guardar_y_otro": "Save and new",
+    "cancelar": "Cancel",
+    "informacion": "Information",
+    "info_fijos": "Fixed income repeats every month (salary, etc.)",
+    "info_fecha": "Income date",
+    "info_descripcion": "Add a description to better identify the income",
+    "no_ingresos": "No income registered",
+    "no_ingresos_descripcion": "Start by registering your first income",
+    "registrar_primero": "Register first income",
+    "confirmar_eliminacion": "Are you sure you want to delete this income?",
+    "error": {
+      "invalid_amount": "Amount must be greater than 0",
+      "not_owner": "You don't have permission to modify this income",
+      "general": "Error processing operation"
+    },
+    "success": {
+      "created": "Income created successfully",
+      "updated": "Income updated successfully",
+      "deleted": "Income deleted successfully"
+    }
+  },
+  
+  "objetivos": {
+  "titulo": "Savings Goals",
+  "nuevo": "New goal",
+  "nuevo_titulo": "Create new goal",
+  "editar": "Edit goal",
+  "editar_titulo": "Edit goal",
+  "eliminar": "Delete",
+  "nombre": "Name",
+  "nombre_placeholder": "E.g.: Trip to Japan",
+  "descripcion": "Description",
+  "descripcion_placeholder": "Describe your goal (optional)",
+  "cantidad_objetivo": "Target amount",
+  "cantidad_objetivo_placeholder": "1000.00",
+  "cantidad_actual": "Current amount",
+  "cantidad_actual_placeholder": "0.00",
+  "fecha_inicio": "Start date",
+  "fecha_limite": "Deadline",
+  "sin_fecha_limite": "No deadline",
+  "progreso": "Progress",
+  "estado": "Status",
+  "activo": "Active",
+  "completado": "Completed",
+  "cancelado": "Canceled",
+  "activos": "Active goals",
+  "completados": "Completed goals",
+  "total_objetivo": "Total target",
+  "acumulado": "Accumulated",
+  "progreso_global": "Global progress",
+  "dias_restantes": "days left",
+  "actualizar": "Update",
+  "actualizar_progreso": "Update progress",
+  "nueva_cantidad": "New amount",
+  "guardar": "Save",
+  "cancelar": "Cancel",
+  "marcar_completado": "Mark as completed",
+  "confirmar_completado": "Are you sure you want to mark this goal as completed?",
+  "no_objetivos": "No savings goals",
+  "no_objetivos_descripcion": "Set your savings goals to stay motivated",
+  "crear_primero": "Create first goal",
+  "confirmar_eliminacion": "Are you sure you want to delete this goal?",
+  "error": {
+    "name_required": "Name is required",
+    "invalid_goal_amount": "Target amount must be greater than 0",
+    "invalid_current_amount": "Current amount cannot be negative",
+    "not_owner": "You don't have permission to modify this goal",
+    "general": "Error processing operation"
+  },
+  "success": {
+    "created": "Goal created successfully",
+    "updated": "Goal updated successfully",
+    "deleted": "Goal deleted successfully",
+    "completed": "Congratulations! You have completed the goal"
+  }
+},
+  
+  "categorias": {
+    "esenciales": "Essential expenses",
+    "esenciales_desc": "Expenses necessary for living (housing, food, utilities)",
+    "prescindibles": "Discretionary expenses",
+    "prescindibles_desc": "Non-essential but common expenses",
+    "ocio": "Leisure",
+    "ocio_desc": "Entertainment, travel, restaurants",
+    "imprevistos": "Unexpected",
+    "imprevistos_desc": "Unexpected expenses and emergencies"
+  },
+  
+  "formularios": {
+    "seleccionar": "Select an option",
+    "guardar": "Save",
+    "cancelar": "Cancel",
+    "eliminar": "Delete",
+    "editar": "Edit",
+    "volver": "Back",
+    "confirmar_accion": "Are you sure?",
+    "campo_obligatorio": "This field is required",
+    "campo_invalido": "This field is invalid"
+  },
+  
+  "errores": {
+    "404": {
+      "titulo": "Page not found",
+      "mensaje": "The page you are looking for does not exist or has been moved",
+      "volver": "Back to home"
+    },
+    "500": {
+      "titulo": "Internal error",
+      "mensaje": "An unexpected error has occurred. Please try again later",
+      "volver": "Back to home"
+    },
+    "general": "An error has occurred"
+  },
+  
+  "seguridad": {
+    "csrf_error": "Validation error. Please refresh the page"
+  },
+  
+  "tiempo": {
+    "hoy": "Today",
+    "ayer": "Yesterday",
+    "esta_semana": "This week",
+    "este_mes": "This month",
+    "este_año": "This year"
+  },
+  
+  "moneda": {
+    "simbolo": "€",
+    "nombre": "Euro",
+    "formato": "{cantidad}€"
+  }
+}
