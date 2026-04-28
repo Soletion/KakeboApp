@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('gastos.titulo') }} - Kakebo{% endblock %}
+
+{% block header %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-arrow-down text-danger me-2"></i>{{ t('gastos.titulo') }}</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('gastos.nuevo') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-2"></i>{{ t('gastos.nuevo') }}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Filtros -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-3">
+                <label for="categoria" class="form-label">{{ t('gastos.categoria') }}</label>
+                <select name="categoria" id="categoria" class="form-select">
+                    <option value="">{{ t('gastos.todas_categorias') }}</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {{ 'selected' if filtros_aplicados.categoria == cat.id }}>
+                            {{ cat.nombre_mostrar }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div class="col-md-3">
+                <label for="desde" class="form-label">{{ t('gastos.desde') }}</label>
+                <input type="date" class="form-control" id="desde" name="desde" value="{{ filtros_aplicados.desde }}">
+            </div>
+            
+            <div class="col-md-3">
+                <label for="hasta" class="form-label">{{ t('gastos.hasta') }}</label>
+                <input type="date" class="form-control" id="hasta" name="hasta" value="{{ filtros_aplicados.hasta }}">
+            </div>
+            
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-2"></i>{{ t('gastos.filtrar') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Resumen -->
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('gastos.total_registros') }}</h6>
+                <h3>{{ total_registros }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card bg-danger text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('gastos.total_gastos') }}</h6>
+                <h3>€{{ "%.2f"|format(total_gastos) }}</h3>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Listado de gastos -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        {% if gastos %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ t('gastos.fecha') }}</th>
+                            <th>{{ t('gastos.categoria') }}</th>
+                            <th>{{ t('gastos.descripcion') }}</th>
+                            <th class="text-end">{{ t('gastos.cantidad') }}</th>
+                            <th class="text-end">{{ t('gastos.acciones') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gasto in gastos %}
+                            <tr>
+                                <td>{{ gasto.fecha }}</td>
+                                <td>
+                                    <span class="badge" style="background-color: {{ gasto.categoria_rel.color }}">
+                                        <i class="fas {{ gasto.categoria_rel.icono }}"></i>
+                                    </span>
+                                    <span class="ms-2">{{ gasto.categoria_rel.nombre_es }}</span>
+                                </td>
+                                <td>{{ gasto.descripcion or '-' }}</td>
+                                <td class="text-end fw-bold text-danger">€{{ "%.2f"|format(gasto.cantidad) }}</td>
+                                <td class="text-end">
+                                    <a href="{{ url_for('gastos.editar', id=gasto.id) }}" 
+                                       class="btn btn-sm btn-outline-primary" 
+                                       title="{{ t('gastos.editar') }}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button type="button" 
+                                            class="btn btn-sm btn-outline-danger" 
+                                            onclick="confirmarEliminacion({{ gasto.id }})"
+                                            title="{{ t('gastos.eliminar') }}">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginación -->
+            {% if total_paginas > 1 %}
+            <nav aria-label="{{ t('gastos.paginacion') }}" class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {{ 'disabled' if pagina == 1 }}">
+                        <a class="page-link" href="{{ url_for('gastos.listado', pagina=pagina-1, **filtros_aplicados) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    
+                    {% for p in range(1, total_paginas + 1) %}
+                        <li class="page-item {{ 'active' if p == pagina }}">
+                            <a class="page-link" href="{{ url_for('gastos.listado', pagina=p, **filtros_aplicados) }}">
+                                {{ p }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    
+                    <li class="page-item {{ 'disabled' if pagina == total_paginas }}">
+                        <a class="page-link" href="{{ url_for('gastos.listado', pagina=pagina+1, **filtros_aplicados) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+            
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-receipt fa-4x text-muted mb-3"></i>
+                <h5>{{ t('gastos.no_gastos') }}</h5>
+                <p class="text-muted">{{ t('gastos.no_gastos_descripcion') }}</p>
+                <a href="{{ url_for('gastos.nuevo') }}" class="btn btn-primary">
+                    <i class="fas fa-plus me-2"></i>{{ t('gastos.registrar_primero') }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Formulario oculto para eliminación -->
+<form id="eliminarForm" method="POST" style="display: none;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmarEliminacion(id) {
+    if (confirm('{{ t('gastos.confirmar_eliminacion') }}')) {
+        const form = document.getElementById('eliminarForm');
+        form.action = "{{ url_for('gastos.eliminar', id=0) }}".replace('0', id);
+        form.submit();
+    }
+}
+
+// Búsqueda en tiempo real (opcional)
+let timeoutId;
+document.querySelector('input[name="descripcion"]')?.addEventListener('input', function(e) {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+        this.form.submit();
+    }, 500);
+});
+</script>
+{% endblock %}

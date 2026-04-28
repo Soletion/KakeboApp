@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('ingresos.' + ('editar' if ingreso else 'nuevo')) }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">
+                    {% if ingreso %}
+                        <i class="fas fa-edit me-2"></i>{{ t('ingresos.editar_titulo') }}
+                    {% else %}
+                        <i class="fas fa-plus-circle me-2"></i>{{ t('ingresos.nuevo_titulo') }}
+                    {% endif %}
+                </h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('ingresos.nuevo' if not ingreso else 'ingresos.editar', id=ingreso.id if ingreso else None) }}" id="ingresoForm" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">{{ t('ingresos.cantidad') }} <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            <input type="number" 
+                                   class="form-control form-control-lg" 
+                                   id="cantidad" 
+                                   name="cantidad" 
+                                   value="{{ ingreso.cantidad if ingreso else '' }}"
+                                   step="0.01" 
+                                   min="0.01"
+                                   required
+                                   placeholder="0.00">
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">{{ t('ingresos.fecha') }}</label>
+                        <input type="date" 
+                               class="form-control form-control-lg" 
+                               id="fecha" 
+                               name="fecha" 
+                               value="{{ ingreso.fecha if ingreso else fecha_actual }}">
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="descripcion" class="form-label">{{ t('ingresos.descripcion') }}</label>
+                        <textarea class="form-control" 
+                                  id="descripcion" 
+                                  name="descripcion" 
+                                  rows="3"
+                                  placeholder="{{ t('ingresos.descripcion_placeholder') }}">{{ ingreso.descripcion if ingreso else '' }}</textarea>
+                    </div>
+                    
+                    <div class="mb-4 form-check">
+                        <input type="checkbox" class="form-check-input" id="es_fijo" name="es_fijo" {{ 'checked' if ingreso and ingreso.es_fijo }}>
+                        <label class="form-check-label" for="es_fijo">
+                            <i class="fas fa-calendar-alt me-1"></i>
+                            {{ t('ingresos.ingreso_fijo') }}
+                        </label>
+                        <div class="form-text">{{ t('ingresos.info_ingreso_fijo') }}</div>
+                    </div>
+                    
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('ingresos.listado') }}" class="btn btn-outline-secondary flex-fill">
+                            <i class="fas fa-times me-2"></i>{{ t('ingresos.cancelar') }}
+                        </a>
+                        
+                        {% if not ingreso %}
+                        <button type="submit" name="guardar_y_otro" class="btn btn-outline-success flex-fill">
+                            <i class="fas fa-save me-2"></i>{{ t('ingresos.guardar_y_otro') }}
+                        </button>
+                        {% endif %}
+                        
+                        <button type="submit" class="btn btn-success flex-fill">
+                            <i class="fas fa-save me-2"></i>{{ t('ingresos.guardar') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.getElementById('ingresoForm').addEventListener('submit', function(e) {
+    const cantidad = document.getElementById('cantidad');
+    
+    if (!cantidad.value || cantidad.value <= 0) {
+        e.preventDefault();
+        cantidad.classList.add('is-invalid');
+    } else {
+        cantidad.classList.remove('is-invalid');
+    }
+});
+
+document.getElementById('cantidad').addEventListener('input', function(e) {
+    let value = this.value;
+    if (value < 0) this.value = 0;
+});
+</script>
+{% endblock %}

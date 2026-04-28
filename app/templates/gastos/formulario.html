@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('gastos.' + ('editar' if gasto else 'nuevo')) }} - Kakebo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-lg border-0">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">
+                    {% if gasto %}
+                        <i class="fas fa-edit me-2"></i>{{ t('gastos.editar_titulo') }}
+                    {% else %}
+                        <i class="fas fa-plus-circle me-2"></i>{{ t('gastos.nuevo_titulo') }}
+                    {% endif %}
+                </h4>
+            </div>
+            
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('gastos.nuevo' if not gasto else 'gastos.editar', id=gasto.id if gasto else None) }}" 
+                      id="gastoForm" novalidate>
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    
+                    <!-- Campo de cantidad -->
+                    <div class="mb-3">
+                        <label for="cantidad" class="form-label">{{ t('gastos.cantidad') }} <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text">€</span>
+                            <input type="number" 
+                                   class="form-control form-control-lg" 
+                                   id="cantidad" 
+                                   name="cantidad" 
+                                   value="{{ gasto.cantidad if gasto else '' }}"
+                                   step="0.01" 
+                                   min="0.01"
+                                   required
+                                   placeholder="{{ t('gastos.cantidad_placeholder') }}">
+                        </div>
+                        <div class="invalid-feedback">{{ t('gastos.error.cantidad') }}</div>
+                    </div>
+                    
+                    <!-- Campo de categoría -->
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">{{ t('gastos.categoria') }} <span class="text-danger">*</span></label>
+                        <select class="form-select form-select-lg" id="categoria" name="categoria" required>
+                            <option value="">{{ t('gastos.seleccionar_categoria') }}</option>
+                            {% for cat in categorias %}
+                                <option value="{{ cat.id }}" 
+                                        {{ 'selected' if gasto and gasto.categoria_id == cat.id }}
+                                        data-icon="{{ cat.icono }}"
+                                        data-color="{{ cat.color }}">
+                                    {{ cat.nombre_mostrar }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">{{ t('gastos.error.categoria') }}</div>
+                    </div>
+                    
+                    <!-- Campo de fecha -->
+                    <div class="mb-3">
+                        <label for="fecha" class="form-label">{{ t('gastos.fecha') }}</label>
+                        <input type="date" 
+                               class="form-control form-control-lg" 
+                               id="fecha" 
+                               name="fecha" 
+                               value="{{ gasto.fecha if gasto else fecha_actual }}">
+                    </div>
+                    
+                    <!-- Campo de descripción -->
+                    <div class="mb-4">
+                        <label for="descripcion" class="form-label">{{ t('gastos.descripcion') }}</label>
+                        <textarea class="form-control" 
+                                  id="descripcion" 
+                                  name="descripcion" 
+                                  rows="3"
+                                  placeholder="{{ t('gastos.descripcion_placeholder') }}">{{ gasto.descripcion if gasto else '' }}</textarea>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="d-flex gap-2">
+                        <a href="{{ url_for('gastos.listado') }}" class="btn btn-outline-secondary flex-fill">
+                            <i class="fas fa-times me-2"></i>{{ t('gastos.cancelar') }}
+                        </a>
+                        
+                        {% if not gasto %}
+                        <button type="submit" name="guardar_y_otro" class="btn btn-outline-primary flex-fill">
+                            <i class="fas fa-save me-2"></i>{{ t('gastos.guardar_y_otro') }}
+                        </button>
+                        {% endif %}
+                        
+                        <button type="submit" class="btn btn-primary flex-fill">
+                            <i class="fas fa-save me-2"></i>{{ t('gastos.guardar') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Información adicional -->
+        <div class="card mt-3 bg-light">
+            <div class="card-body">
+                <h6><i class="fas fa-info-circle me-2 text-primary"></i>{{ t('gastos.informacion') }}</h6>
+                <ul class="small text-muted mb-0">
+                    <li>{{ t('gastos.info_categorias') }}</li>
+                    <li>{{ t('gastos.info_fecha') }}</li>
+                    <li>{{ t('gastos.info_descripcion') }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Validación del formulario en cliente
+document.getElementById('gastoForm').addEventListener('submit', function(e) {
+    const cantidad = document.getElementById('cantidad');
+    const categoria = document.getElementById('categoria');
+    
+    if (!cantidad.value || cantidad.value <= 0) {
+        e.preventDefault();
+        cantidad.classList.add('is-invalid');
+    } else {
+        cantidad.classList.remove('is-invalid');
+    }
+    
+    if (!categoria.value) {
+        e.preventDefault();
+        categoria.classList.add('is-invalid');
+    } else {
+        categoria.classList.remove('is-invalid');
+    }
+});
+
+// Vista previa de la categoría seleccionada
+document.getElementById('categoria').addEventListener('change', function(e) {
+    const selected = this.options[this.selectedIndex];
+    const icon = selected.dataset.icon;
+    const color = selected.dataset.color;
+    
+    if (selected.value) {
+        // Mostrar indicador visual de la categoría seleccionada
+        console.log('Categoría seleccionada:', icon, color);
+    }
+});
+
+// Formatear cantidad mientras se escribe
+document.getElementById('cantidad').addEventListener('input', function(e) {
+    let value = this.value;
+    if (value < 0) this.value = 0;
+});
+</script>
+{% endblock %}

@@ -1,0 +1,185 @@
+{% extends "base.html" %}
+
+{% block title %}{{ t('ingresos.titulo') }} - Kakebo{% endblock %}
+
+{% block header %}
+<div class="row mb-4">
+    <div class="col">
+        <h2><i class="fas fa-arrow-up text-success me-2"></i>{{ t('ingresos.titulo') }}</h2>
+    </div>
+    <div class="col-auto">
+        <a href="{{ url_for('ingresos.nuevo') }}" class="btn btn-success">
+            <i class="fas fa-plus me-2"></i>{{ t('ingresos.nuevo') }}
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<!-- Filtros -->
+<div class="card shadow-sm mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3">
+            <div class="col-md-3">
+                <label for="tipo" class="form-label">{{ t('ingresos.tipo') }}</label>
+                <select name="tipo" id="tipo" class="form-select">
+                    <option value="todos" {{ 'selected' if filtros_aplicados.tipo == 'todos' }}>{{ t('ingresos.todos') }}</option>
+                    <option value="fijos" {{ 'selected' if filtros_aplicados.tipo == 'fijos' }}>{{ t('ingresos.fijos') }}</option>
+                    <option value="variables" {{ 'selected' if filtros_aplicados.tipo == 'variables' }}>{{ t('ingresos.variables') }}</option>
+                </select>
+            </div>
+            
+            <div class="col-md-3">
+                <label for="desde" class="form-label">{{ t('ingresos.desde') }}</label>
+                <input type="date" class="form-control" id="desde" name="desde" value="{{ filtros_aplicados.desde }}">
+            </div>
+            
+            <div class="col-md-3">
+                <label for="hasta" class="form-label">{{ t('ingresos.hasta') }}</label>
+                <input type="date" class="form-control" id="hasta" name="hasta" value="{{ filtros_aplicados.hasta }}">
+            </div>
+            
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-search me-2"></i>{{ t('ingresos.filtrar') }}
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Tarjetas de resumen -->
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('ingresos.total_registros') }}</h6>
+                <h3>{{ total_registros }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-success text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('ingresos.total_ingresos') }}</h6>
+                <h3>€{{ "%.2f"|format(total_ingresos) }}</h3>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card bg-info text-white">
+            <div class="card-body">
+                <h6 class="text-white-50">{{ t('ingresos.total_fijos') }}</h6>
+                <h3>€{{ "%.2f"|format(total_fijos) }}</h3>
+                <small class="text-white-50">{{ t('ingresos.variables') }}: €{{ "%.2f"|format(total_variables) }}</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Listado de ingresos -->
+<div class="card shadow-sm">
+    <div class="card-body">
+        {% if ingresos %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ t('ingresos.fecha') }}</th>
+                            <th>{{ t('ingresos.descripcion') }}</th>
+                            <th>{{ t('ingresos.tipo') }}</th>
+                            <th class="text-end">{{ t('ingresos.cantidad') }}</th>
+                            <th class="text-end">{{ t('ingresos.acciones') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for ingreso in ingresos %}
+                        <tr>
+                            <td>{{ ingreso.fecha }}</td>
+                            <td>{{ ingreso.descripcion or '-' }}</td>
+                            <td>
+                                {% if ingreso.es_fijo %}
+                                    <span class="badge bg-info">{{ t('ingresos.fijo') }}</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">{{ t('ingresos.variable') }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-end text-success fw-bold">+€{{ "%.2f"|format(ingreso.cantidad) }}</td>
+                            <td class="text-end">
+                                <a href="{{ url_for('ingresos.editar', id=ingreso.id) }}" 
+                                   class="btn btn-sm btn-outline-primary" 
+                                   title="{{ t('ingresos.editar') }}">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-sm btn-outline-danger" 
+                                        onclick="confirmarEliminacion({{ ingreso.id }})"
+                                        title="{{ t('ingresos.eliminar') }}">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Paginación -->
+            {% if total_paginas > 1 %}
+            <nav class="mt-4">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {{ 'disabled' if pagina == 1 }}">
+                        <a class="page-link" href="{{ url_for('ingresos.listado', pagina=pagina-1, **filtros_aplicados) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    
+                    {% for p in range(1, total_paginas + 1) %}
+                        <li class="page-item {{ 'active' if p == pagina }}">
+                            <a class="page-link" href="{{ url_for('ingresos.listado', pagina=p, **filtros_aplicados) }}">
+                                {{ p }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                    
+                    <li class="page-item {{ 'disabled' if pagina == total_paginas }}">
+                        <a class="page-link" href="{{ url_for('ingresos.listado', pagina=pagina+1, **filtros_aplicados) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            {% endif %}
+            
+        {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-coins fa-4x text-muted mb-3"></i>
+                <h5>{{ t('ingresos.no_ingresos') }}</h5>
+                <p class="text-muted">{{ t('ingresos.no_ingresos_descripcion') }}</p>
+                <a href="{{ url_for('ingresos.nuevo') }}" class="btn btn-success">
+                    <i class="fas fa-plus me-2"></i>{{ t('ingresos.registrar_primero') }}
+                </a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Formulario oculto para eliminación -->
+<form id="eliminarForm" method="POST" style="display: none;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function confirmarEliminacion(id) {
+    if (confirm('{{ t('ingresos.confirmar_eliminacion') }}')) {
+        const form = document.getElementById('eliminarForm');
+        form.action = "{{ url_for('ingresos.eliminar', id=0) }}".replace('0', id);
+        form.submit();
+    }
+}
+</script>
+{% endblock %}
