@@ -89,7 +89,7 @@
                     </thead>
                     <tbody>
                         {% for gasto in gastos %}
-                            <tr>
+                            <tr id="fila-gasto-{{ gasto.id }}">
                                 <td>{{ gasto.fecha }}</td>
                                 <td>
                                     <span class="badge" style="background-color: {{ gasto.categoria_rel.color }}">
@@ -97,7 +97,9 @@
                                     </span>
                                     <span class="ms-2">{{ gasto.categoria_rel.nombre_es }}</span>
                                 </td>
-                                <td>{{ gasto.descripcion or '-' }}</td>
+                                <td class="descripcion-gasto" data-descripcion="{{ gasto.descripcion or '' }}">
+                                    {{ gasto.descripcion or '-' }}
+                                </td>
                                 <td class="text-end fw-bold text-danger">€{{ "%.2f"|format(gasto.cantidad) }}</td>
                                 <td class="text-end">
                                     <a href="{{ url_for('gastos.editar', id=gasto.id) }}" 
@@ -107,7 +109,7 @@
                                     </a>
                                     <button type="button" 
                                             class="btn btn-sm btn-outline-danger" 
-                                            onclick="confirmarEliminacion({{ gasto.id }})"
+                                            onclick="mostrarModalEliminacion({{ gasto.id }}, '{{ (gasto.descripcion or '')|replace("'", "\\'")|replace('"', '\\"') }}', {{ gasto.cantidad }})"
                                             title="{{ t('gastos.eliminar') }}">
                                         <i class="fas fa-trash"></i>
                                     </button>
@@ -158,29 +160,78 @@
     </div>
 </div>
 
-<!-- Formulario oculto para eliminación -->
-<form id="eliminarForm" method="POST" style="display: none;">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-</form>
+<!-- Modal de confirmación de eliminación -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="eliminarModalLabel">
+                    <i class="fas fa-exclamation-triangle me-2"></i>{{ t('formularios.confirmar_accion') }}
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-center mb-3">
+                    <i class="fas fa-trash-alt fa-4x text-danger mb-3"></i>
+                    <h5>{{ t('gastos.eliminar') }}</h5>
+                    <div class="mt-3 p-3 bg-light rounded">
+                        <p class="mb-1"><strong>{{ t('gastos.descripcion') }}:</strong> <span id="gastoDescripcion"></span></p>
+                        <p class="mb-0"><strong>{{ t('gastos.cantidad') }}:</strong> <span id="gastoCantidad" class="text-danger"></span></p>
+                    </div>
+                    <p class="text-muted mt-3">{{ t('gastos.confirmar_eliminacion') }}</p>
+                    <div class="alert alert-warning mt-2">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Esta acción es irreversible
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="fas fa-times me-2"></i>{{ t('gastos.cancelar') }}
+                </button>
+                <form id="eliminarForm" method="POST" style="display: inline;">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="btn btn-danger" id="confirmarEliminarBtn">
+                        <i class="fas fa-trash-alt me-2"></i>{{ t('gastos.eliminar') }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
 
 {% block extra_js %}
 <script>
-function confirmarEliminacion(id) {
-    if (confirm('{{ t('gastos.confirmar_eliminacion') }}')) {
-        const form = document.getElementById('eliminarForm');
-        form.action = "{{ url_for('gastos.eliminar', id=0) }}".replace('0', id);
-        form.submit();
-    }
+// Variable para almacenar el ID del gasto a eliminar
+let gastoIdAEliminar = null;
+
+// Función para mostrar el modal de eliminación
+function mostrarModalEliminacion(id, descripcion, cantidad) {
+    gastoIdAEliminar = id;
+    
+    // Actualizar el contenido del modal
+    document.getElementById('gastoDescripcion').textContent = descripcion || '(Sin descripción)';
+    document.getElementById('gastoCantidad').innerHTML = `€${cantidad.toFixed(2)}`;
+    
+    // Configurar la acción del formulario
+    const form = document.getElementById('eliminarForm');
+    form.action = "{{ url_for('gastos.eliminar', id=0) }}".replace('0', id);
+    
+    // Mostrar el modal
+    const modal = new bootstrap.Modal(document.getElementById('eliminarModal'));
+    modal.show();
 }
 
 // Búsqueda en tiempo real (opcional)
 let timeoutId;
-document.querySelector('input[name="descripcion"]')?.addEventListener('input', function(e) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => {
-        this.form.submit();
-    }, 500);
-});
+if (document.querySelector('input[name="descripcion"]')) {
+    document.querySelector('input[name="descripcion"]').addEventListener('input', function(e) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            this.form.submit();
+        }, 500);
+    });
+}
 </script>
 {% endblock %}

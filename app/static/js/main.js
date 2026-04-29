@@ -266,3 +266,60 @@ document.addEventListener('keydown', function(e) {
         });
     }
 });
+
+// ===== ELIMINACIÓN CON MODAL =====
+/**
+ * Maneja la eliminación de objetivos con modal de confirmación
+ * @param {string} formId - ID del formulario de eliminación
+ * @param {string} modalId - ID del modal de confirmación
+ */
+function setupDeleteConfirmation(formId, modalId) {
+    const modal = document.getElementById(modalId);
+    if (!modal) return;
+    
+    const form = document.getElementById(formId);
+    if (!form) return;
+    
+    // Cuando el modal se muestra, aseguramos que el formulario esté listo
+    modal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        if (button) {
+            const objetivoId = button.getAttribute('data-objetivo-id');
+            const objetivoNombre = button.getAttribute('data-objetivo-nombre');
+            
+            if (objetivoId) {
+                form.action = `/objetivos/${objetivoId}/eliminar`;
+            }
+            
+            if (objetivoNombre) {
+                const nombreSpan = modal.querySelector('#objetivoNombre');
+                if (nombreSpan) {
+                    nombreSpan.textContent = objetivoNombre;
+                }
+            }
+        }
+    });
+}
+
+// Inicializar confirmaciones de eliminación cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', function() {
+    setupDeleteConfirmation('formEliminarObjetivo', 'eliminarModal');
+});
+
+// Función alternativa para eliminación desde el listado (botón en tarjeta)
+function confirmarEliminacion(objetivoId, objetivoNombre) {
+    if (confirm(`¿Estás seguro de que quieres eliminar el objetivo "${objetivoNombre}"?\n\nEsta acción no se puede deshacer.`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = `/objetivos/${objetivoId}/eliminar`;
+        
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = 'csrf_token';
+        csrfInput.value = document.querySelector('meta[name="csrf-token"]')?.content || '{{ csrf_token() }}';
+        
+        form.appendChild(csrfInput);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
