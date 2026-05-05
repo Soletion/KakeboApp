@@ -97,34 +97,6 @@ Con cobertura:
 
 pytest --cov=app tests/
 
-## Despliegue en Producción
-
-1. Configurar servidor Ubuntu Server LTS
-2. Instalar y configurar Nginx como proxy inverso
-3. Configurar Gunicorn como servidor WSGI
-4. Establecer certificado SSL con Let's Encrypt
-5. Configurar variables de entorno de producción
-6. Ejecutar migraciones de base de datos
-7. Iniciar la aplicación con systemd
-
-Ver documentación completa en docs/instalacion.md
-
-## Mantenimiento
-
-- Backups automáticos: Diarios con retención de 30 días
-- Actualizaciones: Seguir versionado semántico
-- Monitorización: Logs rotativos y alertas por error
-
-## Contribuir
-
-1. Fork del repositorio
-2. Crear rama para nueva funcionalidad
-3. Desarrollar con pruebas
-4. Enviar pull request
-
-## Licencia
-
-Este proyecto está bajo la Licencia MIT. Ver archivo LICENSE para más detalles.
 
 ## Autor
 
