@@ -131,6 +131,15 @@
       "account_deleted": "Tu cuenta ha sido eliminada correctamente"
     }
   },
+
+  "idioma": {
+    "success": {
+      "changed": "Idioma cambiado correctamente"
+    },
+    "error": {
+      "general": "Error al cambiar el idioma"
+    }
+  },
   
   "dashboard": {
     "titulo": "Dashboard",
@@ -230,6 +239,8 @@
     "eliminar": "Eliminar",
     "fecha": "Fecha",
     "descripcion": "Descripción",
+    "ingreso_fijo": "Marcar como ingreso fijo",
+    "info_ingreso_fijo": "Los ingresos fijos se repiten mensualmente (nómina, pensión...)",
     "cantidad": "Cantidad",
     "tipo": "Tipo",
     "fijo": "Fijo",

@@ -131,6 +131,15 @@
       "account_deleted": "Your account has been successfully deleted"
     }
   },
+
+  "idioma": {
+    "success": {
+      "changed": "Language changed successfully"
+    },
+    "error": {
+      "general": "Error changing language"
+    }
+  },
   
   "dashboard": {
     "titulo": "Dashboard",
@@ -239,6 +248,8 @@
     "total_fijos": "Total fixed",
     "total_variables": "Total variable",
     "total_registros": "Total records",
+    "ingreso_fijo": "Mark as fixed income",
+    "info_ingreso_fijo": "Fixed incomes are recurring monthly (salary, pension...)",
     "filtrar": "Filter",
     "desde": "From",
     "hasta": "To",
