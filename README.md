@@ -37,15 +37,15 @@ Kakebo permite a los usuarios llevar un control detallado de sus ingresos y gast
 
 4. Configurar variables de entorno:
    cp .env.example .env
-   # Editar .env con tus configuraciones
+   (Editar .env con tus configuraciones)
 
-5. Crear la base de datos:
+6. Crear la base de datos:
    mysql -u root -p < scripts/init_db.sql
 
-6. Iniciar la aplicación:
+7. Iniciar la aplicación:
    python run.py
 
-7. Acceder a la aplicación:
+8. Acceder a la aplicación:
    http://localhost:5000
 
 ## Estructura del Proyecto
