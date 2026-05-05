@@ -49,7 +49,7 @@ Kakebo permite a los usuarios llevar un control detallado de sus ingresos y gast
    http://localhost:5000
 
 ## Estructura del Proyecto
-
+````
 kakebo/
 ├── app/               # Código principal de la aplicación
 │   ├── controllers/   # Controladores (lógica de negocio)
@@ -63,6 +63,7 @@ kakebo/
 ├── docs/              # Documentación del proyecto
 ├── scripts/           # Scripts de utilidad
 └── logs/              # Archivos de log
+````
 
 ## Funcionalidades Principales
 
